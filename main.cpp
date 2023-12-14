@@ -1,8 +1,31 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 int main() {
     // Création de la fenêtre SFML
-    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Scroll Down Example");
+    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Background Layers Example");
+
+    // Chargement des images de fond
+    sf::Texture backgroundTexture1;
+    if (!backgroundTexture1.loadFromFile("./pics/DelphiTheatre.jpg")) {
+        std::cerr << "Erreur lors du chargement de l'image de fond 1" << std::endl;
+        return 1;
+    }
+
+    sf::Texture backgroundTexture2;
+    if (!backgroundTexture2.loadFromFile("./pics/SekilosUnstroked.png")) {
+        std::cerr << "Erreur lors du chargement de l'image de fond 2" << std::endl;
+        return 1;
+    }
+
+    // Création des sprites pour les images de fond
+    sf::Sprite backgroundSprite1(backgroundTexture1);
+    backgroundSprite1.setScale(static_cast<float>(window.getSize().x) / backgroundTexture1.getSize().x,
+                               static_cast<float>(window.getSize().y) / backgroundTexture1.getSize().y);
+
+    sf::Sprite backgroundSprite2(backgroundTexture2);
+    backgroundSprite2.setScale(static_cast<float>(window.getSize().x) / backgroundTexture2.getSize().x,
+                               static_cast<float>(window.getSize().y) / backgroundTexture2.getSize().y);
 
     // Configuration de la vitesse de défilement
     float scrollSpeed = 100.0f; // pixels par seconde
@@ -39,6 +62,12 @@ int main() {
 
         // Effacement de la fenêtre
         window.clear();
+
+        // Dessin du premier fond
+        window.draw(backgroundSprite1);
+
+        // Dessin du deuxième fond
+        window.draw(backgroundSprite2);
 
         // Dessin de la case
         box.setPosition(375, currentY); // Centre de la fenêtre en x
