@@ -1,0 +1,6 @@
+https://www.alanwood.net/unicode/fontsbyrange.html#u1d200
+
+Windows:  Aegean, Alexander, ALPHABETUM Unicode, Aroania, Avdira, Cardo, EversonMono, Musica, New Athena Unicode, Quivira, Symbola
+
+True:
+Symbola, Noto Music, Quivira
