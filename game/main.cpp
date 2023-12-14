@@ -3,17 +3,17 @@
 
 int main() {
     // Création de la fenêtre SFML
-    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Background Layers Example");
+    sf::RenderWindow window(sf::VideoMode(1220,720), "SFML Background Layers Example");
 
     // Chargement des images de fond
     sf::Texture backgroundTexture1;
-    if (!backgroundTexture1.loadFromFile("./pics/DelphiTheatre.jpg")) {
+    if (!backgroundTexture1.loadFromFile("./assets/DelphiTheatre.jpg")) {
         std::cerr << "Erreur lors du chargement de l'image de fond 1" << std::endl;
         return 1;
     }
 
     sf::Texture backgroundTexture2;
-    if (!backgroundTexture2.loadFromFile("./pics/SekilosUnstroked.png")) {
+    if (!backgroundTexture2.loadFromFile("./assets/SekilosUnstroked.png")) {
         std::cerr << "Erreur lors du chargement de l'image de fond 2" << std::endl;
         return 1;
     }
