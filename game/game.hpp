@@ -1,16 +1,37 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio/Music.hpp>
 #include <iostream>
-#include "string"
+#include <string>
+#include <objects.hpp>
 
-class game{
+using namespace std;
 
-private :
-    float scrollSpeed; // pixels par seconde
-    string backgroundTexture1;
-    string backgroundTexture2;
-    int score;
-    notePattern;
+class Game{
+    private :
 
-public : 
+        sf::RenderWindow window;
+        string windowtitle;
+        
+        sf::Clock clock;
+        float scrollSpeed; // pixels par seconde
+        int score;
+        notePattern NP;
+        vector<string> paths; // order of paths : track, notes, background, column
 
-}
+        // Background-related
+        sf::Texture bgTexture;
+        sf::Sprite bgSprite;
+
+        // Music-related
+        sf::Music music;
+
+    public : 
+        Game(string title, vector<string> pathvector);
+        int launch();
+        int loop();
+
+        int init_window();
+        int init_background();
+        int init_column();
+        int init_music();
+};

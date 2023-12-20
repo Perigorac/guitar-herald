@@ -1,9 +1,51 @@
 #include <SFML/Graphics.hpp>
+#include <game.hpp>
 #include <iostream>
+
+// int loop() {
+
+//     while (window.isOpen()) {
+//         // Gestion des événements
+//         sf::Event event;
+//         while (window.pollEvent(event)) {
+//             if (event.type == sf::Event::Closed) {
+//                 window.close();
+//             }
+//         }
+
+//         // Mise à jour du temps
+//         float deltaTime = clock.restart().asSeconds();
+
+//         // Mise à jour de la position des cases
+//         currentY += scrollSpeed * deltaTime;
+//         if (currentY > window.getSize().y) {
+//             // Réinitialiser la position si la case est en bas de la fenêtre
+//             currentY = -50.0f;
+//         }
+
+//         // Effacement de la fenêtre
+//         window.clear();
+
+//         // Dessin du premier fond
+//         window.draw(backgroundSprite1);
+
+//         // Dessin du deuxième fond
+//         window.draw(backgroundSprite2);
+
+//         // Dessin de la case
+//         box.setPosition(375, currentY); // Centre de la fenêtre en x
+//         window.draw(box);
+
+//         // Affichage de la fenêtre
+//         window.display();
+//     }
+
+//     return 0;
+// }
 
 int main() {
     // Création de la fenêtre SFML
-    sf::RenderWindow window(sf::VideoMode(1220,720), "SFML Background Layers Example");
+    sf::RenderWindow window(sf::VideoMode(1220,720), "GUITAR HERALD");
 
     // Chargement des images de fond
     sf::Texture backgroundTexture1;
@@ -27,55 +69,8 @@ int main() {
     backgroundSprite2.setScale(static_cast<float>(window.getSize().x) / backgroundTexture2.getSize().x,
                                static_cast<float>(window.getSize().y) / backgroundTexture2.getSize().y);
 
-    // Configuration de la vitesse de défilement
-    float scrollSpeed = 100.0f; // pixels par seconde
-
-    // Configuration des cases
-    sf::RectangleShape box(sf::Vector2f(50, 50));
-    box.setFillColor(sf::Color::Green);
-
-    // Position initiale de la première case
-    float currentY = -50.0f;
-
-    // Utilisation de sf::Clock pour mesurer le temps entre les mises à jour
-    sf::Clock clock;
-
     // Boucle principale
-    while (window.isOpen()) {
-        // Gestion des événements
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
-        }
-
-        // Mise à jour du temps
-        float deltaTime = clock.restart().asSeconds();
-
-        // Mise à jour de la position des cases
-        currentY += scrollSpeed * deltaTime;
-        if (currentY > window.getSize().y) {
-            // Réinitialiser la position si la case est en bas de la fenêtre
-            currentY = -50.0f;
-        }
-
-        // Effacement de la fenêtre
-        window.clear();
-
-        // Dessin du premier fond
-        window.draw(backgroundSprite1);
-
-        // Dessin du deuxième fond
-        window.draw(backgroundSprite2);
-
-        // Dessin de la case
-        box.setPosition(375, currentY); // Centre de la fenêtre en x
-        window.draw(box);
-
-        // Affichage de la fenêtre
-        window.display();
-    }
+    loop();
 
     return 0;
 }
