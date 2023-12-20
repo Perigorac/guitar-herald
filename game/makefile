@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS = -c
-LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
+LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 SOURCES = $(wildcard ./*.cpp)
 OBJECTS = $(SOURCES:.cpp=.o)
 EXECUTABLE = sfml-app

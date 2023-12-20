@@ -1,4 +1,4 @@
-#include <game.hpp>
+#include "game.hpp"
 
 // Constructors
 
@@ -10,16 +10,18 @@ Game::Game(string title, vector<string> pathvector) {
 int Game::init_window() {
     window.create(sf::VideoMode(1220,720),windowtitle);
     window.requestFocus();
+    return 0;
 }
 
 int Game::init_background() {
     if (!bgTexture.loadFromFile(paths[2])) {
-        std::cerr << "Erreur lors du chargement de l'image de fond 1" << std::endl;
-        return 1;
+        std::cerr << "Could not load background image" << std::endl;
+        return -1;
     }
     bgSprite.setTexture(bgTexture);
     bgSprite.setScale(static_cast<float>(window.getSize().x) / bgTexture.getSize().x,
                       static_cast<float>(window.getSize().y) / bgTexture.getSize().y);
+    return 0;
 }
 
 int Game::init_column() {
@@ -28,7 +30,7 @@ int Game::init_column() {
 
 int Game::init_music() {
     if (!music.openFromFile(paths[0])) { 
-        std::cerr << "Could not load music track " << paths[0] << std::endl;
+        std::cerr << "Could not load music track" << paths[0] << std::endl;
         return -1;
     }
     music.pause();
@@ -37,10 +39,11 @@ int Game::init_music() {
 
 int Game::launch() {
     init_window();
-    init_music();
     init_background();
-    music.play();
+    // init_music();
+    // music.play();
     loop();
+    return 0;
 }
 
 int Game::loop() {

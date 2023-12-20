@@ -2,17 +2,17 @@
 #include <SFML/Audio/Music.hpp>
 #include <iostream>
 #include <string>
-#include <objects.hpp>
+#include "objects.hpp"
 
 using namespace std;
 
-class Game{
+class Game {
     private :
 
         sf::RenderWindow window;
         string windowtitle;
-        
         sf::Clock clock;
+
         float scrollSpeed; // pixels par seconde
         int score;
         notePattern NP;
