@@ -30,7 +30,7 @@ int Game::init_window() {
 
 int Game::init_music() {
     if (!music.openFromFile(paths[0])) { 
-        std::cerr << "Could not load music track at " << paths[0] << std::endl;
+        cerr << "Could not load music track at " << paths[0] << endl;
         return -1;
     }
     music.pause();
@@ -40,17 +40,16 @@ int Game::init_music() {
 int Game::init_notes() {
     FILE * notefile = fopen(paths[1].c_str(),"r");
     if(notefile == NULL) {
-        std::cerr << "Could not load note file at " << paths[1] << std::endl;
+        cerr << "Could not load note file at " << paths[1] << endl;
         return -1;
     }
 
     while(!feof(notefile)) {
-        int t;
-        if(fscanf(notefile,"%d:",&t)) break;
+        int time, line, length;
+        char ntype;
         vector<int> v;
-        char c;
-        // fscanf("%d %c",&t,&c);
-        while(fscanf(notefile,"%c,",&c) > 0);
+        if(fscanf(notefile,"%d\t%c\t%d\t%d",&time,&ntype,&line,&length) < 2) break;
+        cout << "Time= " << time << ", type=" << ntype << ", line=" << line << ", length=" << length << endl;
     }
     
     fclose(notefile);
@@ -59,7 +58,7 @@ int Game::init_notes() {
 
 int Game::init_background() {
     if (!bgTexture.loadFromFile(paths[2])) {
-        std::cerr << "Could not load background image at " << paths[2] << std::endl;
+        cerr << "Could not load background image at " << paths[2] << endl;
         return -1;
     }
     bgSprite.setTexture(bgTexture);
@@ -77,12 +76,12 @@ int Game::init_column() {
 int Game::launch() {
     score = 0;
     init_window();
-    // init_music();
+    init_music();
     init_notes();
     init_background();
     // init_column();
 
-    // music.play();
+    music.play();
     loop();
     return 0;
 }
@@ -96,7 +95,6 @@ int Game::event_handler() {
 
             case Event::KeyPressed:
                 if(keymap.count(event.key.code) > 0) line_pressed(keymap[event.key.code]);
-                
                 break;
 
             // case Event::KeyReleased:

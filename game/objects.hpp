@@ -4,7 +4,6 @@
 
 #define SCREEN_BOTTOM 0
 
-
 using namespace std;
 using namespace sf;
 

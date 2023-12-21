@@ -3,9 +3,9 @@
 
 int main() {
 
-    vector<string> pathvector = {"","","./assets/DelphiTheatre.jpg",""};
-    Game testgame("Testgame",pathvector);
-    testgame.launch();
+    vector<string> pathvector = {"./audio/Seikilos_Epitaph_Full.ogg","./testnote.txt","./assets/DelphiTheatre.jpg",""};
+    Game Seikilos("Seikilos",pathvector);
+    Seikilos.launch();
 
     return 0;
 }
