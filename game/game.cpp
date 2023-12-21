@@ -1,5 +1,7 @@
 #include "game.hpp"
 
+map<int,vector<int>> notemap = {};
+
 map<Keyboard::Key,int> keymap = {{Keyboard::Q,1},
                                  {Keyboard::S,2},
                                  {Keyboard::D,3},
@@ -9,7 +11,6 @@ map<Keyboard::Key,int> keymap = {{Keyboard::Q,1},
                                  {Keyboard::L,7},
                                  {Keyboard::M,8},
                                  };
-
 
 // Constructor
 
@@ -27,9 +28,38 @@ int Game::init_window() {
     return 0;
 }
 
+int Game::init_music() {
+    if (!music.openFromFile(paths[0])) { 
+        std::cerr << "Could not load music track at " << paths[0] << std::endl;
+        return -1;
+    }
+    music.pause();
+    return 0;   
+}
+
+int Game::init_notes() {
+    FILE * notefile = fopen(paths[1].c_str(),"r");
+    if(notefile == NULL) {
+        std::cerr << "Could not load note file at " << paths[1] << std::endl;
+        return -1;
+    }
+
+    while(!feof(notefile)) {
+        int t;
+        if(fscanf(notefile,"%d:",&t)) break;
+        vector<int> v;
+        char c;
+        // fscanf("%d %c",&t,&c);
+        while(fscanf(notefile,"%c,",&c) > 0);
+    }
+    
+    fclose(notefile);
+    return 0;
+}
+
 int Game::init_background() {
     if (!bgTexture.loadFromFile(paths[2])) {
-        std::cerr << "Could not load background image" << std::endl;
+        std::cerr << "Could not load background image at " << paths[2] << std::endl;
         return -1;
     }
     bgSprite.setTexture(bgTexture);
@@ -42,22 +72,16 @@ int Game::init_column() {
     return 0;
 }
 
-int Game::init_music() {
-    if (!music.openFromFile(paths[0])) { 
-        std::cerr << "Could not load music track" << paths[0] << std::endl;
-        return -1;
-    }
-    music.pause();
-    return 0;   
-}
-
 // Game processing functions
 
 int Game::launch() {
     score = 0;
     init_window();
-    init_background();
     // init_music();
+    init_notes();
+    init_background();
+    // init_column();
+
     // music.play();
     loop();
     return 0;
@@ -101,12 +125,22 @@ int Game::loop() {
         if(event_handler() == -1) window.close();
 
         // Make all of the objects fall
+        for(auto noteiter = notes.begin(); noteiter != notes.end(); noteiter++) {
+            score -= (*noteiter).fall(scrollSpeed * deltaTime);
+        }
 
         // First step : clear the window
         window.clear();
         
         // Draw the background first
         window.draw(bgSprite);
+
+        // Draw the column
+
+        // Draw all the notes
+        for(auto noteiter = notes.begin(); noteiter != notes.end(); noteiter++) {
+            window.draw(*noteiter);
+        }
 
         // Display the window
         window.display();

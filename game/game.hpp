@@ -1,5 +1,6 @@
 #include <SFML/Audio.hpp>
 #include <iostream>
+#include <cstdio>
 #include <set>
 #include <map>
 #include "objects.hpp"
@@ -15,7 +16,7 @@ class Game {
 
         float scrollSpeed; // pixels par seconde
         int score;
-        notePattern NP;
+        int BPM;
         vector<FallingObject> notes; // all of the notes currently loaded
 
         // Background-related
@@ -31,9 +32,10 @@ class Game {
         int loop();
 
         int init_window();
+        int init_music();
+        int init_notes();
         int init_background();
         int init_column();
-        int init_music();
 
         int event_handler();
         void line_pressed(int line);

@@ -2,25 +2,16 @@
 #include <vector>
 #include <string>
 
-#define FALL_Y 4
+#define SCREEN_BOTTOM 0
+
 
 using namespace std;
 using namespace sf;
 
-class notePattern {
-
-    public:
-        void decode(string fpath);
-
-    private:
-        vector<int> notevector;
-        int BPM;
-};
-
 class FallingObject : public sf::Drawable { // Abstract
 
     public:
-        void fall();
+        int fall(float yfall);
         void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
     private:
