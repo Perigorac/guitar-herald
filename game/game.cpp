@@ -1,15 +1,29 @@
 #include "game.hpp"
 
-// Constructors
+map<Keyboard::Key,int> keymap = {{Keyboard::Q,1},
+                                 {Keyboard::S,2},
+                                 {Keyboard::D,3},
+                                 {Keyboard::F,4},
+                                 {Keyboard::J,5},
+                                 {Keyboard::K,6},
+                                 {Keyboard::L,7},
+                                 {Keyboard::M,8},
+                                 };
+
+
+// Constructor
 
 Game::Game(string title, vector<string> pathvector) {
     paths = pathvector;
     windowtitle = title;
 }
 
+// Init functions
+
 int Game::init_window() {
-    window.create(sf::VideoMode(1220,720),windowtitle);
+    window.create(VideoMode(1220,720),windowtitle);
     window.requestFocus();
+    window.setFramerateLimit(60);
     return 0;
 }
 
@@ -37,7 +51,10 @@ int Game::init_music() {
     return 0;   
 }
 
+// Game processing functions
+
 int Game::launch() {
+    score = 0;
     init_window();
     init_background();
     // init_music();
@@ -46,18 +63,44 @@ int Game::launch() {
     return 0;
 }
 
+int Game::event_handler() {
+    Event event;
+    while (window.pollEvent(event)) {
+        switch(event.type) {
+            case Event::Closed:
+                return -1;
+
+            case Event::KeyPressed:
+                if(keymap.count(event.key.code) > 0) line_pressed(keymap[event.key.code]);
+                
+                break;
+
+            // case Event::KeyReleased:
+            //     if(keymap.count(event.key.code) > 0) line_released(keymap[event.key.code]);
+            //     break;
+
+            default:
+                break;
+        }
+    }
+    return 0;
+}
+
+void Game::line_pressed(int line) {
+    cout << "Pressed line " << line << endl;
+    score--;
+    return;
+}
+
 int Game::loop() {
 
     while(window.isOpen()) {
 
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
-        }
-
         float deltaTime = clock.restart().asSeconds();
+
+        if(event_handler() == -1) window.close();
+
+        // Make all of the objects fall
 
         // First step : clear the window
         window.clear();

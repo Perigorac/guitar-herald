@@ -1,29 +1,29 @@
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio/Music.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
-#include <string>
+#include <set>
+#include <map>
 #include "objects.hpp"
-
-using namespace std;
 
 class Game {
     private :
 
-        sf::RenderWindow window;
+        vector<string> paths; // order of paths : track, notes, background, column
+
+        RenderWindow window;
         string windowtitle;
-        sf::Clock clock;
+        Clock clock;
 
         float scrollSpeed; // pixels par seconde
         int score;
         notePattern NP;
-        vector<string> paths; // order of paths : track, notes, background, column
+        vector<FallingObject> notes; // all of the notes currently loaded
 
         // Background-related
-        sf::Texture bgTexture;
-        sf::Sprite bgSprite;
+        Texture bgTexture;
+        Sprite bgSprite;
 
         // Music-related
-        sf::Music music;
+        Music music;
 
     public : 
         Game(string title, vector<string> pathvector);
@@ -34,4 +34,8 @@ class Game {
         int init_background();
         int init_column();
         int init_music();
+
+        int event_handler();
+        void line_pressed(int line);
+        void line_released(int line);
 };
