@@ -183,17 +183,11 @@ int Game::loop() {
         // Handle events - including control (window closing) and keystrokes
         if(event_handler() == -1) window.close();
 
-        // Make all of the notes fall
-        for(auto noteiter = notes.begin(); noteiter != notes.end(); noteiter++) {
-            if(((**noteiter).fall(scrollSpeed * deltaTime))) {
-                score--;
-                cout << "FALLEN !" << endl;
-                // delete *noteiter;
-            } 
-        }
-
         // Check for new notes to insert
         insert_notes();
+
+        // End the game if the note vector is empty
+        if(notes.empty()) window.close();
 
         // Clear the window for re-drawing
         window.clear();
@@ -210,6 +204,19 @@ int Game::loop() {
 
         // Display the window
         window.display();
+
+        // Make all of the notes fall
+        for(auto noteiter = notes.begin(); noteiter != notes.end();) {
+            if(((**noteiter).fall(scrollSpeed * deltaTime))) {
+                score--;
+                cout << "FALLEN !" << endl;
+                noteiter = notes.erase(noteiter);
+                cout << "ERASED !" << endl;
+            }
+            else {
+                noteiter++;
+            }
+        }
 
     }
 
