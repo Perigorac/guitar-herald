@@ -21,6 +21,7 @@
 [] diagrammme de classe UML complet
 
 [] commentaire du code
+Pour l'instant uniquement les grandes étapes de la boucle principale de jeu
 
 [] pas d’erreurs avec Valgrind
 

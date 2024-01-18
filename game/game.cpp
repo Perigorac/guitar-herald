@@ -1,7 +1,5 @@
 #include "game.hpp"
 
-map<int,vector<int>> notemap = {};
-
 map<Keyboard::Key,int> keymap = {{Keyboard::Q,1},
                                  {Keyboard::S,2},
                                  {Keyboard::D,3},
@@ -24,7 +22,7 @@ Game::Game(string title, vector<string> pathvector) {
 int Game::init_window() {
     window.create(VideoMode(1220,720),windowtitle);
     window.requestFocus();
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(FPS_LIMIT);
     return 0;
 }
 
@@ -37,7 +35,7 @@ int Game::init_music() {
     return 0;   
 }
 
-int Game::init_notes() {
+int Game::decode_notes() {
     FILE * notefile = fopen(paths[1].c_str(),"r");
     if(notefile == NULL) {
         cerr << "Could not load note file at " << paths[1] << endl;
@@ -45,14 +43,23 @@ int Game::init_notes() {
     }
 
     while(!feof(notefile)) {
-        int time, line, length;
+        int time, line, param;
         char ntype;
         vector<int> v;
-        if(fscanf(notefile,"%d\t%c\t%d\t%d",&time,&ntype,&line,&length) < 2) break;
-        cout << "Time= " << time << ", type=" << ntype << ", line=" << line << ", length=" << length << endl;
+        if(fscanf(notefile,"%d\t%c\t%d\t%d",&time,&ntype,&line,&param) < 2) break;
+        // cout << "Time= " << time << ", type=" << ntype << ", line=" << line << ", param=" << param << endl;
+        string temp = string(1,ntype) + "," + to_string(line) + "," + to_string(param);
+        notepattern[time].push_back(temp);
     }
     
     fclose(notefile);
+
+    // for(auto npiter = notepattern.begin(); npiter != notepattern.end(); npiter++) {
+    //     for(auto striter = npiter->second.begin(); striter != npiter->second.end(); striter++) {
+    //         cout << *striter << endl;
+    //     }
+    // }
+
     return 0;
 }
 
@@ -71,17 +78,27 @@ int Game::init_column() {
     return 0;
 }
 
+int Game::init_obj_sprites() {
+    NormTex.loadFromFile("./assets/BluePuck.png");
+    BonusTex.loadFromFile("./assets/GreenPuck.png");
+    return 0;
+}
+
 // Game processing functions
 
 int Game::launch() {
     score = 0;
+    scrollSpeed = 0.1f;
     init_window();
     init_music();
-    init_notes();
+    decode_notes();
     init_background();
     // init_column();
+    init_obj_sprites();
 
     music.play();
+    clock.restart(); // The clock and the music player are started just next to each other in order to sync game logic with the music
+    lastLoopTime = Time::Zero;
     loop();
     return 0;
 }
@@ -114,20 +131,71 @@ void Game::line_pressed(int line) {
     return;
 }
 
+void Game::insert_notes() {
+
+    if(notepattern.empty()) return;
+    int next_ms = notepattern.begin()->first;
+
+    if(clock.getElapsedTime().asMilliseconds() >= next_ms) {
+        while(!notepattern[next_ms].empty()) {
+            string next_note = notepattern[next_ms].back();
+            cout << "ms = " << next_ms << ", adding " << next_note << endl;
+            char t;
+            int l,p;
+            sscanf(next_note.c_str(),"%c,%d,%d",&t,&l,&p);
+            // cout << "t = " << t << ", l = " << l << ", r = " << r << endl;
+            
+            switch(t) {
+                case 'N':
+                    notes.push_back(new NormalPuck(l));
+                    break;
+
+                case 'L' :
+                    notes.push_back(new LongPuck(l,p));
+                    break;
+
+                case 'S' :
+                    notes.push_back(new StrumLine);
+                    break;
+
+                case 'B' :
+                    notes.push_back(new BonusPuck(l,p));
+                    break;
+                    
+                default:
+                    break;
+            }
+            notepattern[next_ms].pop_back();
+        }
+        notepattern.erase(next_ms);
+    }
+}
+
 int Game::loop() {
 
     while(window.isOpen()) {
 
-        float deltaTime = clock.restart().asSeconds();
+        float deltaTime = (clock.getElapsedTime() - lastLoopTime).asMilliseconds();
+        lastLoopTime = clock.getElapsedTime();
 
+        // cout << "Delta = " << deltaTime << endl;
+
+        // Handle events - including control (window closing) and keystrokes
         if(event_handler() == -1) window.close();
 
-        // Make all of the objects fall
+        // Make all of the notes fall
         for(auto noteiter = notes.begin(); noteiter != notes.end(); noteiter++) {
-            score -= (*noteiter).fall(scrollSpeed * deltaTime);
+            if(((**noteiter).fall(scrollSpeed * deltaTime))) {
+                score--;
+                cout << "FALLEN !" << endl;
+                // delete *noteiter;
+            } 
         }
 
-        // First step : clear the window
+        // Check for new notes to insert
+        insert_notes();
+
+        // Clear the window for re-drawing
         window.clear();
         
         // Draw the background first
@@ -137,11 +205,12 @@ int Game::loop() {
 
         // Draw all the notes
         for(auto noteiter = notes.begin(); noteiter != notes.end(); noteiter++) {
-            window.draw(*noteiter);
+            window.draw(**noteiter);
         }
 
         // Display the window
         window.display();
+
     }
 
     return 0;

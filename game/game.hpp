@@ -5,6 +5,8 @@
 #include <map>
 #include "objects.hpp"
 
+#define FPS_LIMIT 60
+
 class Game {
     private :
 
@@ -12,12 +14,16 @@ class Game {
 
         RenderWindow window;
         string windowtitle;
-        Clock clock;
 
+        Clock clock;
+        Time lastLoopTime;
+        
         float scrollSpeed; // pixels par seconde
         int score;
-        int BPM;
-        vector<FallingObject> notes; // all of the notes currently loaded
+        map<int,vector<string>> notepattern; // the note pattern for the current song, loaded from the associated text file
+        // The format of strings (one string correspoonds to one note) is : "TYPE,LINE,PARAM" - PARAM being an additional parameter :
+        // Length for long pucks, value for bonus pucks.
+        vector<FallingObject *> notes; // all of the notes currently on screen
 
         // Background-related
         Texture bgTexture;
@@ -33,11 +39,13 @@ class Game {
 
         int init_window();
         int init_music();
-        int init_notes();
+        int decode_notes();
         int init_background();
         int init_column();
+        int init_obj_sprites();
 
         int event_handler();
+        void insert_notes();
         void line_pressed(int line);
         void line_released(int line);
 };
