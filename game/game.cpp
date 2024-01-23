@@ -90,13 +90,13 @@ int Game::launch() {
     score = 0;
     scrollSpeed = 0.1f;
     init_window();
-    init_music();
+    // init_music();
     decode_notes();
     init_background();
     // init_column();
     init_obj_sprites();
 
-    music.play();
+    // music.play();
     clock.restart(); // The clock and the music player are started just next to each other in order to sync game logic with the music
     lastLoopTime = Time::Zero;
     loop();
@@ -105,6 +105,7 @@ int Game::launch() {
 
 int Game::event_handler() {
     Event event;
+    int line = 0;
     while (window.pollEvent(event)) {
         switch(event.type) {
             case Event::Closed:
@@ -114,9 +115,9 @@ int Game::event_handler() {
                 if(keymap.count(event.key.code) > 0) line_pressed(keymap[event.key.code]);
                 break;
 
-            // case Event::KeyReleased:
-            //     if(keymap.count(event.key.code) > 0) line_released(keymap[event.key.code]);
-            //     break;
+            case Event::KeyReleased:
+                if(keymap.count(event.key.code) > 0) line_released(keymap[event.key.code]);
+                break;
 
             default:
                 break;
@@ -126,8 +127,25 @@ int Game::event_handler() {
 }
 
 void Game::line_pressed(int line) {
+    int scoremod = 0;
     cout << "Pressed line " << line << endl;
-    score--;
+    for(auto noteiter = notes.begin(); noteiter != notes.end(); noteiter++) {
+        scoremod = (**noteiter).press(line);
+        if(scoremod > 0) cout << "There was an object on this line, worth " << scoremod << " points." << endl;
+        score += scoremod;
+    }
+    // Score loss for incorrect key press ??
+    return;
+}
+
+void Game::line_released(int line) {
+    int scoremod = 0;
+    cout << "Released line " << line << endl;
+    for(auto noteiter = notes.begin(); noteiter != notes.end(); noteiter++) {
+        scoremod = (**noteiter).release(line);
+        if(scoremod > 0) cout << "There was an object on this line, worth " << scoremod << " points." << endl;
+        score += scoremod;
+    }
     return;
 }
 

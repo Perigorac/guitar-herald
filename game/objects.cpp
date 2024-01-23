@@ -14,17 +14,55 @@ bool FallingObject::fall(float yfall) {
     // Return true whenever the FallingObject falls beyond the bottom of the screen
     sprite.move(Vector2f(0.0f,yfall));
     y+=yfall;
-    cout << y << endl;
+    // cout << y << endl;
     return (y > SCREEN_BOTTOM);
 }
 
 // STRUM LINE
+
+StrumLine::StrumLine() {
+    sprite.setTexture(StrumTex);
+    linePressed.resize(8);
+    for(auto lPiter = linePressed.begin(); lPiter != linePressed.end(); lPiter++) *lPiter = false;
+}
+
+int StrumLine::press(int line) {
+    if(isInZone()) {
+        linePressed[line] = true;
+        bool gBool = true;
+        for(auto lPiter = linePressed.begin(); lPiter != linePressed.end(); lPiter++) gBool &= *lPiter;
+        if(gBool) { // Everything is 'true', all lines have been pressed
+            return computeScore();
+        }
+        else {
+            return 0;
+        }
+    }
+    else {
+        return 0;
+    }
+}
 
 // ROUND PUCK
 
 RoundPuck::RoundPuck(int l) {
     line = l;
     sprite.setPosition(Vector2f(LINE_BEGIN + l*LINE_SPACING,0.0f));
+    pressed = false;
+}
+
+int RoundPuck::press(int l) {
+    if(isInZone() && (l == line)) pressed = true;
+    return 0;
+}
+
+int RoundPuck::release(int l) {
+    if((l == line) && pressed) {
+        return computeScore();
+    }
+    else {
+        return 0;
+    }
 }
 
 // NORMAL PUCK
