@@ -74,7 +74,7 @@ int Game::init_background() {
     return 0;
 }
 
-int Game::init_column() {
+int Game::init_decor() {
     return 0;
 }
 
@@ -90,13 +90,13 @@ int Game::launch() {
     score = 0;
     scrollSpeed = 0.1f;
     init_window();
-    // init_music();
+    init_music();
     decode_notes();
     init_background();
-    // init_column();
+    init_decor();
     init_obj_sprites();
 
-    // music.play();
+    music.play();
     clock.restart(); // The clock and the music player are started just next to each other in order to sync game logic with the music
     lastLoopTime = Time::Zero;
     loop();
@@ -191,6 +191,16 @@ void Game::insert_notes() {
 
 int Game::loop() {
 
+    RectangleShape bottomRect;
+    bottomRect.setPosition(0,SCREEN_BOTTOM);
+    bottomRect.setSize(Vector2f(1200.0,5.0));
+    bottomRect.setFillColor(Color::Red);
+
+    RectangleShape zoneRect;
+    zoneRect.setPosition(0,SCREEN_ZONE);
+    zoneRect.setSize(Vector2f(1200.0,5.0));
+    zoneRect.setFillColor(Color::Green);
+
     while(window.isOpen()) {
 
         float deltaTime = (clock.getElapsedTime() - lastLoopTime).asMilliseconds();
@@ -213,12 +223,17 @@ int Game::loop() {
         // Draw the background first
         window.draw(bgSprite);
 
-        // Draw the column
+        // Draw decor (column, strings...)
 
         // Draw all the notes
         for(auto noteiter = notes.begin(); noteiter != notes.end(); noteiter++) {
             window.draw(**noteiter);
         }
+
+        // Draw additional elements
+        window.draw(bottomRect);
+
+        window.draw(zoneRect);
 
         // Display the window
         window.display();

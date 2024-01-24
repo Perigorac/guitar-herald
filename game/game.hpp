@@ -40,7 +40,7 @@ class Game {
         int init_music();
         int decode_notes();
         int init_background();
-        int init_column();
+        int init_decor();
         int init_obj_sprites();
 
         int event_handler();
