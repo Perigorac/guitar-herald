@@ -36,8 +36,9 @@ class Game {
         Texture columnTexture;
         Sprite columnSprite;
         Texture stringTexture;
+        Texture pressedStringTexture;
         Sprite stringsSprites[8];
-        
+
         // Music-related
         Music music;
 
@@ -55,6 +56,7 @@ class Game {
 
         int event_handler();
         void insert_notes();
+        void displayScore(RenderWindow& window);
         void line_pressed(int line);
         void line_released(int line);
 };

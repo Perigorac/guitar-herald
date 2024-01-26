@@ -86,6 +86,10 @@ int Game::init_decor() {
     sf::Color spriteColor = columnSprite.getColor();
     spriteColor.a = 150; // Mettre une valeur entre 0 et 255 pour l'opacité
     columnSprite.setColor(spriteColor);
+    if (!pressedStringTexture.loadFromFile(paths[6])) {
+        std::cerr << "Could not load string pressed image at " << paths[6] << std::endl;
+        return -1;
+    }
 
     if (!stringTexture.loadFromFile(paths[5])) {
         std::cerr << "Could not load string image at " << paths[5] << std::endl;
@@ -99,10 +103,6 @@ int Game::init_decor() {
         stringsSprites[i].setScale(stringS,stringS*2);      
         xPosition += spacing;
     }
-
-
-
-
 
     if (!lyreTexture.loadFromFile(paths[3])) {
         cerr << "Could not load lyre image at " << paths[3] << endl;
@@ -168,7 +168,9 @@ void Game::line_pressed(int line) {
     for(auto noteiter = notes.begin(); noteiter != notes.end(); noteiter++) {
         scoremod = (**noteiter).press(line);
         if(scoremod > 0) cout << "There was an object on this line, worth " << scoremod << " points." << endl;
+        stringsSprites[line - 1].setTexture(pressedStringTexture);
         score += scoremod;
+
     }
     // Score loss for incorrect key press ??
     return;
@@ -180,6 +182,7 @@ void Game::line_released(int line) {
     for(auto noteiter = notes.begin(); noteiter != notes.end(); noteiter++) {
         scoremod = (**noteiter).release(line);
         if(scoremod > 0) cout << "There was an object on this line, worth " << scoremod << " points." << endl;
+        stringsSprites[line - 1].setTexture(stringTexture);
         score += scoremod;
     }
     return;
@@ -224,6 +227,32 @@ void Game::insert_notes() {
         notepattern.erase(next_ms);
     }
 }
+
+void Game::displayScore(RenderWindow& window) {
+    // Créer un rectangle noir semi-transparent
+    RectangleShape background(Vector2f(200, 50));
+    background.setFillColor(Color(0, 0, 0, 102)); // Opacité de 40%
+
+    // Positionner le rectangle
+    background.setPosition(300, 300);
+
+    // Créer un objet sf::Text pour afficher le score
+    Font font;
+    if (!font.loadFromFile("arial.ttf")) {
+        std::cerr << "Could not load font file" << std::endl;
+        return;
+    }
+
+    Text scoreText("Score: " + std::to_string(score), font, 20);
+    scoreText.setPosition(300, 300);
+    scoreText.setFillColor(Color::White);
+
+    // Dessiner le rectangle et le texte dans la fenêtre
+    window.draw(background);
+    window.draw(scoreText);
+}
+
+
 
 int Game::loop() {
 
@@ -276,8 +305,11 @@ int Game::loop() {
 
         window.draw(zoneRect);
 
+        displayScore(window);
+
         // Display the window
         window.display();
+
 
         // Make all of the notes fall
         for(auto noteiter = notes.begin(); noteiter != notes.end();) {
