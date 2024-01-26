@@ -49,7 +49,7 @@ int Game::decode_notes() {
         if(fscanf(notefile,"%d\t%c\t%d\t%d",&time,&ntype,&line,&param) < 2) break;
         // cout << "Time= " << time << ", type=" << ntype << ", line=" << line << ", param=" << param << endl;
         string temp = string(1,ntype) + "," + to_string(line) + "," + to_string(param);
-        notepattern[time].push_back(temp);
+        notepattern[time*10].push_back(temp);
     }
     
     fclose(notefile);
@@ -96,7 +96,7 @@ int Game::launch() {
     init_decor();
     init_obj_sprites();
 
-    music.play();
+    // music.play(); // Delay that to the time it takes for a note to fall all the way (calculated)
     clock.restart(); // The clock and the music player are started just next to each other in order to sync game logic with the music
     lastLoopTime = Time::Zero;
     loop();
@@ -215,7 +215,7 @@ int Game::loop() {
         insert_notes();
 
         // End the game if the note vector is empty
-        if(notes.empty()) window.close();
+        if(notepattern.empty()) window.close();
 
         // Clear the window for re-drawing
         window.clear();

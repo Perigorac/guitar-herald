@@ -3,7 +3,7 @@
 
 int main() {
 
-    vector<string> pathvector = {"./audio/Seikilos_Epitaph_Full.ogg","./testnote.txt","./assets/DelphiTheatre.jpg",""};
+    vector<string> pathvector = {"./audio/Seikilos_Epitaph_Full.ogg","./SeikilosNote.txt","./assets/DelphiTheatre.jpg",""};
     Game Seikilos("Seikilos",pathvector);
     Seikilos.launch();
 
