@@ -5,6 +5,8 @@
 #include "objects.hpp"
 
 #define FPS_LIMIT 60
+#define windowWidth 1220
+#define windowHeight 720
 
 class Game {
     private :
@@ -28,6 +30,14 @@ class Game {
         Texture bgTexture;
         Sprite bgSprite;
 
+        // Decor-related
+        Texture lyreTexture;
+        Sprite lyreSprite;
+        Texture columnTexture;
+        Sprite columnSprite;
+        Texture stringTexture;
+        Sprite stringsSprites[8];
+        
         // Music-related
         Music music;
 

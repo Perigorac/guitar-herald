@@ -48,6 +48,7 @@ int StrumLine::press(int line) {
 RoundPuck::RoundPuck(int l) {
     line = l;
     sprite.setPosition(Vector2f(LINE_BEGIN + l*LINE_SPACING,0.0f));
+    sprite.setScale(puckS,puckS);
     pressed = false;
 }
 

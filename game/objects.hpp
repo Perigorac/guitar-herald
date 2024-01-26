@@ -3,11 +3,19 @@
 #include <string>
 #include <iostream>
 
-#define SCREEN_BOTTOM 500.0f
+#define SCREEN_BOTTOM 632.0f
 #define ZONE_SIZE 50.0f
 #define SCREEN_ZONE (SCREEN_BOTTOM - ZONE_SIZE)
-#define LINE_BEGIN 100
-#define LINE_SPACING 150
+#define LINE_BEGIN 410
+#define LINE_SPACING 55
+
+//Texture sizes
+#define puckS 0.42f
+#define stringS 0.5f
+#define LyreSx 1.25f
+#define LyreSy 1.25f
+#define CollumnSx 0.95f
+#define CollumnSy 0.95f
 
 using namespace std;
 using namespace sf;

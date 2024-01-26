@@ -20,7 +20,7 @@ Game::Game(string title, vector<string> pathvector) {
 // Init functions
 
 int Game::init_window() {
-    window.create(VideoMode(1220,720),windowtitle);
+    window.create(VideoMode(windowWidth,windowHeight),windowtitle);
     window.requestFocus();
     window.setFramerateLimit(FPS_LIMIT);
     return 0;
@@ -75,6 +75,42 @@ int Game::init_background() {
 }
 
 int Game::init_decor() {
+    if (!columnTexture.loadFromFile(paths[4])) {
+        cerr << "Could not load lyre image at " << paths[4] << endl;
+        return -1;
+    }
+    columnSprite.setTexture(columnTexture);
+    columnSprite.setScale(CollumnSx,CollumnSy);
+    columnSprite.setPosition((int)((windowWidth + 150  - 470*CollumnSx)/2),(int)(windowHeight - 1347*CollumnSx));//On rajoute 150 parce que la fenêtre semble plus grande que windowWidth (plutot 1370 que 1220) et bonne pour windowHeight
+
+    sf::Color spriteColor = columnSprite.getColor();
+    spriteColor.a = 150; // Mettre une valeur entre 0 et 255 pour l'opacité
+    columnSprite.setColor(spriteColor);
+
+    if (!stringTexture.loadFromFile(paths[5])) {
+        std::cerr << "Could not load string image at " << paths[5] << std::endl;
+        return -1;
+    }
+    int xPosition = LINE_BEGIN+80;
+    int spacing = LINE_SPACING;
+    for (int i = 0; i < 8; ++i) {
+        stringsSprites[i].setTexture(stringTexture);
+        stringsSprites[i].setPosition(xPosition,0);
+        stringsSprites[i].setScale(stringS,stringS*2);      
+        xPosition += spacing;
+    }
+
+
+
+
+
+    if (!lyreTexture.loadFromFile(paths[3])) {
+        cerr << "Could not load lyre image at " << paths[3] << endl;
+        return -1;
+    }
+    lyreSprite.setTexture(lyreTexture);
+    lyreSprite.setScale(LyreSx,LyreSy);
+    lyreSprite.setPosition((int)((windowWidth + 150 - 800*LyreSx)/2),(int)(windowHeight - 800*LyreSx));
     return 0;
 }
 
@@ -193,7 +229,7 @@ int Game::loop() {
 
     RectangleShape bottomRect;
     bottomRect.setPosition(0,SCREEN_BOTTOM);
-    bottomRect.setSize(Vector2f(1200.0,5.0));
+    bottomRect.setSize(Vector2f(1360.0,5.0));
     bottomRect.setFillColor(Color::Red);
 
     RectangleShape zoneRect;
@@ -224,6 +260,11 @@ int Game::loop() {
         window.draw(bgSprite);
 
         // Draw decor (column, strings...)
+        window.draw(columnSprite);
+        window.draw(lyreSprite);
+        for (int i = 0; i < 8; ++i) {
+            window.draw(stringsSprites[i]);
+        }
 
         // Draw all the notes
         for(auto noteiter = notes.begin(); noteiter != notes.end(); noteiter++) {
