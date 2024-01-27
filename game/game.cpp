@@ -54,12 +54,6 @@ int Game::decode_notes() {
     
     fclose(notefile);
 
-    // for(auto npiter = notepattern.begin(); npiter != notepattern.end(); npiter++) {
-    //     for(auto striter = npiter->second.begin(); striter != npiter->second.end(); striter++) {
-    //         cout << *striter << endl;
-    //     }
-    // }
-
     return 0;
 }
 
@@ -132,7 +126,7 @@ int Game::launch() {
     init_decor();
     init_obj_sprites();
 
-    // music.play(); // Delay that to the time it takes for a note to fall all the way (calculated)
+    music.play(); // Delay that to the time it takes for a note to fall all the way (calculated)
     clock.restart(); // The clock and the music player are started just next to each other in order to sync game logic with the music
     lastLoopTime = Time::Zero;
     loop();
@@ -163,28 +157,43 @@ int Game::event_handler() {
 }
 
 void Game::line_pressed(int line) {
-    int scoremod = 0;
-    cout << "Pressed line " << line << endl;
-    for(auto noteiter = notes.begin(); noteiter != notes.end(); noteiter++) {
-        scoremod = (**noteiter).press(line);
-        if(scoremod > 0) cout << "There was an object on this line, worth " << scoremod << " points." << endl;
-        stringsSprites[line - 1].setTexture(pressedStringTexture);
-        score += scoremod;
+    int scoremod;
+    bool presseffect = true;
 
+    cout << "Pressed line " << line << endl;
+    for(auto noteiter = notes.begin(); noteiter != notes.end();) {
+        scoremod = (**noteiter).press(line);
+        if(scoremod > 0)  {
+            cout << "There was an object on this line, worth " << scoremod << " points." << endl;
+            score += scoremod;
+            noteiter = notes.erase(noteiter);
+        } 
+        else noteiter++;
+
+        if(scoremod == -1) presseffect = false;
     }
-    // Score loss for incorrect key press ??
+    stringsSprites[line - 1].setTexture(pressedStringTexture);
+
+    if(!presseffect) score-=LINE_NOTHING_SCORE_LOSS;
+
     return;
 }
 
 void Game::line_released(int line) {
     int scoremod = 0;
     cout << "Released line " << line << endl;
-    for(auto noteiter = notes.begin(); noteiter != notes.end(); noteiter++) {
+    for(auto noteiter = notes.begin(); noteiter != notes.end();) {
         scoremod = (**noteiter).release(line);
-        if(scoremod > 0) cout << "There was an object on this line, worth " << scoremod << " points." << endl;
-        stringsSprites[line - 1].setTexture(stringTexture);
-        score += scoremod;
+        if(scoremod > 0)  {
+            cout << "There was an object on this line, worth " << scoremod << " points." << endl;
+            score += scoremod;
+            noteiter = notes.erase(noteiter);
+        } else {
+            if(scoremod == -1) score-=LINE_NOTHING_SCORE_LOSS;
+            noteiter++;
+        }
     }
+    stringsSprites[line - 1].setTexture(stringTexture);
     return;
 }
 
@@ -238,7 +247,7 @@ void Game::displayScore(RenderWindow& window) {
 
     // Créer un objet sf::Text pour afficher le score
     Font font;
-    if (!font.loadFromFile("arial.ttf")) {
+    if (!font.loadFromFile("./assets/font/HERAKLES.TTF")) {
         std::cerr << "Could not load font file" << std::endl;
         return;
     }
@@ -270,8 +279,6 @@ int Game::loop() {
 
         float deltaTime = (clock.getElapsedTime() - lastLoopTime).asMilliseconds();
         lastLoopTime = clock.getElapsedTime();
-
-        // cout << "Delta = " << deltaTime << endl;
 
         // Handle events - including control (window closing) and keystrokes
         if(event_handler() == -1) window.close();
@@ -310,14 +317,11 @@ int Game::loop() {
         // Display the window
         window.display();
 
-
         // Make all of the notes fall
         for(auto noteiter = notes.begin(); noteiter != notes.end();) {
             if(((**noteiter).fall(scrollSpeed * deltaTime))) {
-                score--;
-                cout << "FALLEN !" << endl;
+                score-=(**noteiter).fls();
                 noteiter = notes.erase(noteiter);
-                cout << "ERASED !" << endl;
             }
             else {
                 noteiter++;

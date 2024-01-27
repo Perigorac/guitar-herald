@@ -39,7 +39,7 @@ int StrumLine::press(int line) {
         }
     }
     else {
-        return 0;
+        return -1;
     }
 }
 
@@ -53,8 +53,11 @@ RoundPuck::RoundPuck(int l) {
 }
 
 int RoundPuck::press(int l) {
-    if(isInZone() && (l == line)) pressed = true;
-    return 0;
+    if(isInZone()) {
+       if(l == line) pressed = true;
+       return 0; 
+    }
+    return -1;
 }
 
 int RoundPuck::release(int l) {

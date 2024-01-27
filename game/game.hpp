@@ -8,6 +8,8 @@
 #define windowWidth 1220
 #define windowHeight 720
 
+#define LINE_NOTHING_SCORE_LOSS 1
+
 class Game {
     private :
 
