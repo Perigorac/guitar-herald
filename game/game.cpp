@@ -110,6 +110,7 @@ int Game::init_decor() {
 
 int Game::init_obj_sprites() {
     NormTex.loadFromFile("./assets/BluePuck.png");
+    StrumTex.loadFromFile("./assets/Strum.png");
     BonusTex.loadFromFile("./assets/GreenPuck.png");
     return 0;
 }
