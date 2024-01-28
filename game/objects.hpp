@@ -3,9 +3,7 @@
 #include <string>
 #include <iostream>
 
-#define SCREEN_BOTTOM 632.0f
-#define ZONE_SIZE 50.0f
-#define SCREEN_ZONE (SCREEN_BOTTOM - ZONE_SIZE)
+#define SCREEN_BOTTOM 600.0f
 #define LINE_BEGIN 410
 #define LINE_SPACING 55
 
@@ -43,7 +41,7 @@ class FallingObject : public Drawable { // Abstract
         virtual int fls() {return 0;}
 
     protected:
-        bool isInZone() {return y + (float)((sprite.getLocalBounds()).height) >= SCREEN_ZONE;}
+        bool isInZone() {return y + (float)((sprite.getLocalBounds()).height) >= SCREEN_BOTTOM;}
         float y;
         Sprite sprite;
 };

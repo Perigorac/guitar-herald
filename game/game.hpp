@@ -8,6 +8,9 @@
 #define windowWidth 1220
 #define windowHeight 720
 
+#define SCROLL_SPEED 0.1f // pixel per frame
+#define MUSIC_START_DELAY (SCROLL_SPEED * (SCREEN_BOTTOM - (puckS * 128)) * 6) // gives a number of frames to delay music.play()
+
 #define LINE_NOTHING_SCORE_LOSS 1
 
 class Game {
@@ -21,7 +24,6 @@ class Game {
         Clock clock;
         Time lastLoopTime;
         
-        float scrollSpeed; // pixels par seconde
         int score;
         map<int,vector<string>> notepattern; // the note pattern for the current song, loaded from the associated text file
         // The format of strings (one string correspoonds to one note) is : "TYPE,LINE,PARAM" - PARAM being an additional parameter :
@@ -43,6 +45,7 @@ class Game {
 
         // Music-related
         Music music;
+        float framecounter;
 
     public : 
         Game(string title, vector<string> pathvector);

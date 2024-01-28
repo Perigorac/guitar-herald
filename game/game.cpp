@@ -119,7 +119,6 @@ int Game::init_obj_sprites() {
 
 int Game::launch() {
     score = 0;
-    scrollSpeed = 0.1f;
     init_window();
     init_music();
     decode_notes();
@@ -127,7 +126,7 @@ int Game::launch() {
     init_decor();
     init_obj_sprites();
 
-    music.play(); // Delay that to the time it takes for a note to fall all the way (calculated)
+    framecounter = 0.0f;
     clock.restart(); // The clock and the music player are started just next to each other in order to sync game logic with the music
     lastLoopTime = Time::Zero;
     loop();
@@ -263,7 +262,6 @@ void Game::displayScore(RenderWindow& window) {
 }
 
 
-
 int Game::loop() {
 
     RectangleShape bottomRect;
@@ -271,15 +269,17 @@ int Game::loop() {
     bottomRect.setSize(Vector2f(1360.0,5.0));
     bottomRect.setFillColor(Color::Red);
 
-    RectangleShape zoneRect;
-    zoneRect.setPosition(0,SCREEN_ZONE);
-    zoneRect.setSize(Vector2f(1200.0,5.0));
-    zoneRect.setFillColor(Color::Green);
-
     while(window.isOpen()) {
 
         float deltaTime = (clock.getElapsedTime() - lastLoopTime).asMilliseconds();
         lastLoopTime = clock.getElapsedTime();
+
+        // If the music was suspended, play it
+        if(music.getStatus() != Music::Playing) {
+            framecounter++;
+            cout << framecounter << " < " << MUSIC_START_DELAY << endl;
+            if(framecounter >= MUSIC_START_DELAY) music.play();
+        }
 
         // Handle events - including control (window closing) and keystrokes
         if(event_handler() == -1) window.close();
@@ -311,8 +311,6 @@ int Game::loop() {
         // Draw additional elements
         window.draw(bottomRect);
 
-        window.draw(zoneRect);
-
         displayScore(window);
 
         // Display the window
@@ -320,7 +318,7 @@ int Game::loop() {
 
         // Make all of the notes fall
         for(auto noteiter = notes.begin(); noteiter != notes.end();) {
-            if(((**noteiter).fall(scrollSpeed * deltaTime))) {
+            if(((**noteiter).fall(SCROLL_SPEED * deltaTime))) {
                 score-=(**noteiter).fls();
                 noteiter = notes.erase(noteiter);
             }
