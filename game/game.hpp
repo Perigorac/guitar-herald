@@ -11,6 +11,12 @@
 #define SCROLL_SPEED 0.1f // pixel per frame
 #define MUSIC_START_DELAY (SCROLL_SPEED * (SCREEN_BOTTOM - (puckS * 128)) * 6) // gives a number of frames to delay music.play()
 
+#define stringS 0.5f
+#define LyreSx 1.25f
+#define LyreSy 1.25f
+#define ColumnSx 0.95f
+#define ColumnSy 0.95f
+
 #define LINE_NOTHING_SCORE_LOSS 1
 
 class Game {

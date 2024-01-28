@@ -28,7 +28,7 @@ bool FallingObject::fall(float yfall) {
 StrumLine::StrumLine() {
     sprite.setTexture(StrumTex);
     sprite.setPosition(Vector2f(LINE_BEGIN + 50 ,0.0f));
-    sprite.setScale(0.55f,0.55f);
+    sprite.setScale(strumS,strumS);
     linePressed.resize(8);
     for(auto lPiter = linePressed.begin(); lPiter != linePressed.end(); lPiter++) *lPiter = false;
 }
@@ -36,9 +36,9 @@ StrumLine::StrumLine() {
 int StrumLine::press(int line) {
     if(isInZone()) {
         linePressed[line] = true;
-        bool gBool = true;
-        for(auto lPiter = linePressed.begin(); lPiter != linePressed.end(); lPiter++) gBool &= *lPiter;
-        if(gBool) { // Everything is 'true', all lines have been pressed
+        int nbpressed = 0;
+        for(auto lPiter = linePressed.begin(); lPiter != linePressed.end(); lPiter++) if(*lPiter) nbpressed++;
+        if(nbpressed > 5) { // Everything is 'true', all lines have been pressed
             return computeScore();
         }
         else {

@@ -3,17 +3,13 @@
 #include <string>
 #include <iostream>
 
-#define SCREEN_BOTTOM 600.0f
+#define SCREEN_BOTTOM 622.0f
 #define LINE_BEGIN 410
 #define LINE_SPACING 55
 
 //Texture sizes
 #define puckS 0.42f
-#define stringS 0.5f
-#define LyreSx 1.25f
-#define LyreSy 1.25f
-#define CollumnSx 0.95f
-#define CollumnSy 0.95f
+#define strumS 0.55f
 
 // FLS stands for "Fall Score Loss"
 #define NORMAL_FLS 5

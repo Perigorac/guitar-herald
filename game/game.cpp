@@ -77,8 +77,8 @@ int Game::init_decor() {
         return -1;
     }
     columnSprite.setTexture(columnTexture);
-    columnSprite.setScale(CollumnSx,CollumnSy);
-    columnSprite.setPosition((int)((windowWidth + 150  - 470*CollumnSx)/2),(int)(windowHeight - 1347*CollumnSx));//On rajoute 150 parce que la fenêtre semble plus grande que windowWidth (plutot 1370 que 1220) et bonne pour windowHeight
+    columnSprite.setScale(ColumnSx,ColumnSy);
+    columnSprite.setPosition((int)((windowWidth + 150  - 470*ColumnSx)/2),(int)(windowHeight - 1347*ColumnSx)); //On rajoute 150 parce que la fenêtre semble plus grande que windowWidth (plutot 1370 que 1220) et bonne pour windowHeight
 
     sf::Color spriteColor = columnSprite.getColor();
     spriteColor.a = 150; // Mettre une valeur entre 0 et 255 pour l'opacité
@@ -277,10 +277,10 @@ void Game::draw_decor() {
 
 int Game::loop() {
 
-    RectangleShape bottomRect;
-    bottomRect.setPosition(0,SCREEN_BOTTOM);
-    bottomRect.setSize(Vector2f(1360.0,5.0));
-    bottomRect.setFillColor(Color::Red);
+    RectangleShape bottomLine;
+    bottomLine.setPosition(0,SCREEN_BOTTOM);
+    bottomLine.setSize(Vector2f(1360.0,5.0));
+    bottomLine.setFillColor(Color::Red);
 
     while(window.isOpen()) {
 
@@ -317,8 +317,6 @@ int Game::loop() {
         }
 
         // Draw additional elements
-        window.draw(bottomRect);
-
         displayScore();
 
         // Display the window
