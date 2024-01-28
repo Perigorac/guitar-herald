@@ -238,7 +238,7 @@ void Game::insert_notes() {
     }
 }
 
-void Game::displayScore(RenderWindow& window) {
+void Game::displayScore() {
     // Créer un rectangle noir semi-transparent
     RectangleShape background(Vector2f(200, 50));
     background.setFillColor(Color(0, 0, 0, 102)); // Opacité de 40%
@@ -262,6 +262,14 @@ void Game::displayScore(RenderWindow& window) {
     window.draw(scoreText);
 }
 
+void Game::draw_decor() {
+    window.draw(columnSprite);
+    window.draw(lyreSprite);
+    for (int i = 0; i < 8; ++i) {
+        window.draw(stringsSprites[i]);
+    }
+}
+
 
 int Game::loop() {
 
@@ -278,7 +286,6 @@ int Game::loop() {
         // If the music was suspended, play it
         if(music.getStatus() != Music::Playing) {
             framecounter++;
-            cout << framecounter << " < " << MUSIC_START_DELAY << endl;
             if(framecounter >= MUSIC_START_DELAY) music.play();
         }
 
@@ -298,11 +305,7 @@ int Game::loop() {
         window.draw(bgSprite);
 
         // Draw decor (column, strings...)
-        window.draw(columnSprite);
-        window.draw(lyreSprite);
-        for (int i = 0; i < 8; ++i) {
-            window.draw(stringsSprites[i]);
-        }
+        draw_decor();
 
         // Draw all the notes
         for(auto noteiter = notes.begin(); noteiter != notes.end(); noteiter++) {
@@ -312,7 +315,7 @@ int Game::loop() {
         // Draw additional elements
         window.draw(bottomRect);
 
-        displayScore(window);
+        displayScore();
 
         // Display the window
         window.display();

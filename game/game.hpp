@@ -61,7 +61,8 @@ class Game {
 
         int event_handler();
         void insert_notes();
-        void displayScore(RenderWindow& window);
+        void displayScore();
+        void draw_decor();
         void line_pressed(int line);
         void line_released(int line);
 };
