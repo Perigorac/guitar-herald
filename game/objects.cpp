@@ -14,7 +14,6 @@ bool FallingObject::fall(float yfall) {
     // Return true whenever the FallingObject falls beyond the bottom of the screen
     sprite.move(Vector2f(0.0f,yfall));
     y+=yfall;
-    // cout << y << endl;
     return (y > SCREEN_BOTTOM);
 }
 
@@ -71,14 +70,14 @@ int RoundPuck::release(int l) {
     }
 }
 
-// NORMAL PUCK
+// // NORMAL PUCK
 
-void NormalPuck::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-    target.draw(sprite);
-}
+// void NormalPuck::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+//     target.draw(sprite);
+// }
 
-// BONUS PUCK
+// // BONUS PUCK
 
-void BonusPuck::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-    target.draw(sprite);
-}
+// void BonusPuck::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+//     target.draw(sprite);
+// }

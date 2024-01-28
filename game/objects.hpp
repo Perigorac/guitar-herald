@@ -33,7 +33,7 @@ class FallingObject : public Drawable { // Abstract
     public:
         FallingObject() {y = 0.0f;}
         bool fall(float yfall);
-        virtual void draw(RenderTarget &target, RenderStates states) const {}
+        void draw(RenderTarget &target, RenderStates states) const {target.draw(sprite);}
         virtual int computeScore() const {return 5;}
         virtual ~FallingObject() {};
         virtual int press(int l) {return 0;}
@@ -50,7 +50,6 @@ class StrumLine : public FallingObject {
     
     public:
         StrumLine();
-        void draw(RenderTarget &target, RenderStates states) const {};
         int press(int l);
         int fls() {return STRUM_FLS;}
     private:
@@ -62,7 +61,6 @@ class RoundPuck : public FallingObject {
 
     public:
         RoundPuck(int l);
-        void draw(RenderTarget &target, RenderStates states) const {};
         int press(int l);
         int release(int l);
     protected:
@@ -74,7 +72,6 @@ class NormalPuck : public RoundPuck {
 
     public:
         NormalPuck(int l) : RoundPuck(l) {sprite.setTexture(NormTex);}
-        void draw(RenderTarget &target, RenderStates states) const;
         int fls() {return NORMAL_FLS;}
     private:
         char letter;
@@ -84,7 +81,6 @@ class BonusPuck : public RoundPuck {
     
     public:
         BonusPuck(int l, int value) : RoundPuck(l) {sprite.setTexture(BonusTex);}
-        void draw(RenderTarget &target, RenderStates states) const;
         int fls() {return 0;}
     private:
         int pointvalue;
@@ -94,7 +90,6 @@ class BonusPuck : public RoundPuck {
 class LongPuck : public RoundPuck {
     public:
         LongPuck(int l, int len) : RoundPuck(l) {sprite.setTexture(LongTex);}
-        void draw(RenderTarget &target, RenderStates states) const {};
         int fls() {return LONG_FLS;}
 
     private:
