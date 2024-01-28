@@ -39,7 +39,7 @@ int StrumLine::press(int line) {
         int nbpressed = 0;
         for(auto lPiter = linePressed.begin(); lPiter != linePressed.end(); lPiter++) if(*lPiter) nbpressed++;
         if(nbpressed > 5) { // Everything is 'true', all lines have been pressed
-            return computeScore();
+            return STRUM_VALUE;
         }
         else {
             return 0;
@@ -69,7 +69,30 @@ int RoundPuck::press(int l) {
 
 int RoundPuck::release(int l) {
     if((l == line) && pressed) {
-        return computeScore();
+        return NORMAL_VALUE;
+    }
+    else {
+        return 0;
+    }
+}
+
+// NORMAL PUCK
+
+NormalPuck::NormalPuck(int l) : RoundPuck(l) {
+    sprite.setTexture(NormTex);
+    text.setFont(NpFont);
+    text.setString("AAAAA");
+}
+
+void NormalPuck::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+    target.draw(sprite);
+}
+
+// BONUS PUCK
+
+int BonusPuck::release(int l) {
+    if((l == line) && pressed) {
+        return pointvalue;
     }
     else {
         return 0;
@@ -103,17 +126,4 @@ LongPuck::LongPuck(int l, int len) : RoundPuck(l) {
     sprite.setTexture(renderTexture.getTexture());
     sprite.setPosition(Vector2f(LINE_BEGIN + l*LINE_SPACING ,0)); //(len*BonusTex.getSize().y)));
     // sprite.setScale(0.55f,0.55f);
-}
-
-
-// NORMAL PUCK
-
-NormalPuck::NormalPuck(int l) : RoundPuck(l) {
-    sprite.setTexture(NormTex);
-    text.setFont(NpFont);
-    text.setString("AAAAA");
-}
-
-void NormalPuck::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-    target.draw(sprite);
 }

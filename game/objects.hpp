@@ -11,6 +11,11 @@
 #define puckS 0.42f
 #define strumS 0.55f
 
+// Point values
+#define STRUM_VALUE 10
+#define NORMAL_VALUE 5
+#define LONG_VALUE 5
+
 // FLS stands for "Fall Score Loss"
 #define NORMAL_FLS 5
 #define STRUM_FLS 5
@@ -32,7 +37,6 @@ class FallingObject : public Drawable { // Abstract
         FallingObject() {y = 0.0f;}
         bool fall(float yfall);
         void draw(RenderTarget &target, RenderStates states) const {target.draw(sprite);}
-        virtual int computeScore() const {return 5;}
         virtual ~FallingObject() {};
         virtual int press(int l) {return 0;}
         virtual int release(int l) {return 0;}
@@ -82,6 +86,7 @@ class BonusPuck : public RoundPuck {
     
     public:
         BonusPuck(int l, int value) : RoundPuck(l) {sprite.setTexture(BonusTex);}
+        int release(int l);
         int fls() {return 0;}
     private:
         int pointvalue;
