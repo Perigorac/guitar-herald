@@ -16,7 +16,8 @@
 [v] 2 fonctions virtuelles différentes et utilisées à bon escient
 > FallingObject::draw() et FallingObject::computeScore()
 
-[] 2 surcharges d’opérateurs
+[v] 2 surcharges d’opérateurs
+FallingObject& FallingObject::operator+=(float yfall) et float FallingObject::operator>=(float value)
 
 [v] 2 conteneurs différents de la STL
 > notepattern est un map, notes est un vector

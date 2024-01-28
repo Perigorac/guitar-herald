@@ -8,12 +8,16 @@ Texture BonusTex;
 Texture LongTex;
 
 // FALLING OBJECT
+FallingObject& FallingObject::operator+=(float yfall) {
+    sprite.move(sf::Vector2f(0.0f, yfall));
+    y += yfall;
+    return *this;
+}
 
 bool FallingObject::fall(float yfall) {
     // this method implements basic physics of any note / falling object - fall by a certain amount
     // Return true whenever the FallingObject falls beyond the bottom of the screen
-    sprite.move(Vector2f(0.0f,yfall));
-    y+=yfall;
+    *this += yfall;
     return (y > SCREEN_BOTTOM);
 }
 

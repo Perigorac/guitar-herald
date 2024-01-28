@@ -41,9 +41,11 @@ class FallingObject : public Drawable { // Abstract
         virtual int fls() {return 0;}
 
     protected:
-        bool isInZone() {return y + (float)((sprite.getLocalBounds()).height) >= SCREEN_BOTTOM;}
         float y;
         Sprite sprite;
+        float operator>=(float value) const {return y + static_cast<float>(sprite.getLocalBounds().height) >= value;}
+        FallingObject& operator+=(float yfall);
+        bool isInZone() {return *this >= SCREEN_BOTTOM;}
 };
 
 class StrumLine : public FallingObject {
