@@ -91,9 +91,11 @@ class BonusPuck : public RoundPuck {
 
 class LongPuck : public RoundPuck {
     public:
-        LongPuck(int l, int len) : RoundPuck(l) {sprite.setTexture(LongTex);}
+        LongPuck(int l, int len);
         int fls() {return LONG_FLS;}
 
     private:
         int length;
+        RectangleShape backgroundLine;
+        RenderTexture renderTexture;
 };

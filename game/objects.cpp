@@ -74,6 +74,36 @@ int RoundPuck::release(int l) {
     }
 }
 
+// LONG PUCK
+
+LongPuck::LongPuck(int l, int len) : RoundPuck(l) {
+    // Créer la texture pour le rendu hors écran
+    renderTexture.create(BonusTex.getSize().x, BonusTex.getSize().y + len*BonusTex.getSize().y);
+    renderTexture.clear(Color::Transparent);
+
+    // Dessiner le sprite sur la texture
+    Sprite spriteTex;
+    spriteTex.setTexture(BonusTex);
+    spriteTex.setPosition(0, (BonusTex.getSize().y + (len-1)*BonusTex.getSize().y));
+
+    // Dessiner le rectangle sur la texture
+    backgroundLine.setSize(Vector2f(20, BonusTex.getSize().y + len*BonusTex.getSize().y));
+    backgroundLine.setFillColor(Color(200,0,0, static_cast<Uint8>(250)));
+    backgroundLine.setPosition(BonusTex.getSize().x/2 - 10,0);//sprite.getPosition());
+
+
+    renderTexture.draw(backgroundLine);
+    renderTexture.draw(spriteTex);
+
+    // Finir le rendu hors écran
+    renderTexture.display();
+
+    sprite.setTexture(renderTexture.getTexture());
+    sprite.setPosition(Vector2f(LINE_BEGIN + l*LINE_SPACING ,0)); //(len*BonusTex.getSize().y)));
+    // sprite.setScale(0.55f,0.55f);
+}
+
+
 // // NORMAL PUCK
 
 // void NormalPuck::draw(sf::RenderTarget &target, sf::RenderStates states) const {
