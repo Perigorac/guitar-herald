@@ -28,6 +28,8 @@ extern Texture NormTex;
 extern Texture BonusTex;
 extern Texture LongTex;
 
+extern Font NpFont;
+
 class FallingObject : public Drawable { // Abstract
 
     public:
@@ -73,10 +75,11 @@ class RoundPuck : public FallingObject {
 class NormalPuck : public RoundPuck {
 
     public:
-        NormalPuck(int l) : RoundPuck(l) {sprite.setTexture(NormTex);}
+        NormalPuck(int l);
         int fls() {return NORMAL_FLS;}
+        void draw(sf::RenderTarget &target, sf::RenderStates states) const;
     private:
-        char letter;
+        Text text;
 };
 
 class BonusPuck : public RoundPuck {

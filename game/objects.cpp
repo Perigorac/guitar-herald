@@ -7,6 +7,8 @@ Texture NormTex;
 Texture BonusTex;
 Texture LongTex;
 
+Font NpFont;
+
 // FALLING OBJECT
 FallingObject& FallingObject::operator+=(float yfall) {
     sprite.move(sf::Vector2f(0.0f, yfall));
@@ -104,14 +106,14 @@ LongPuck::LongPuck(int l, int len) : RoundPuck(l) {
 }
 
 
-// // NORMAL PUCK
+// NORMAL PUCK
 
-// void NormalPuck::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-//     target.draw(sprite);
-// }
+NormalPuck::NormalPuck(int l) : RoundPuck(l) {
+    sprite.setTexture(NormTex);
+    text.setFont(NpFont);
+    text.setString("AAAAA");
+}
 
-// // BONUS PUCK
-
-// void BonusPuck::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-//     target.draw(sprite);
-// }
+void NormalPuck::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+    target.draw(sprite);
+}

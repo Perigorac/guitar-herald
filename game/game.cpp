@@ -10,6 +10,8 @@ map<Keyboard::Key,int> keymap = {{Keyboard::Q,1},
                                  {Keyboard::M,8},
                                  };
 
+extern Font NpFont;
+
 // Constructor
 
 Game::Game(string title, vector<string> pathvector) {
@@ -21,6 +23,7 @@ Game::Game(string title, vector<string> pathvector) {
 
 int Game::init_window() {
     window.create(VideoMode(windowWidth,windowHeight),windowtitle);
+    window.setPosition(Vector2i(200,100));
     window.requestFocus();
     window.setFramerateLimit(FPS_LIMIT);
     return 0;
@@ -113,6 +116,7 @@ int Game::init_obj_sprites() {
     StrumTex.loadFromFile("./assets/Strum.png");
     BonusTex.loadFromFile("./assets/GreenPuck.png");
     LongTex.loadFromFile("./assets/RedPuck.png");
+    NpFont.loadFromFile("./assets/font/Quivira.otf");
     return 0;
 }
 
