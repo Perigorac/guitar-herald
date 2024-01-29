@@ -104,18 +104,16 @@ int BonusPuck::release(int l) {
 LongPuck::LongPuck(int l, int len) : RoundPuck(l) {
     // Créer la texture pour le rendu hors écran
     renderTexture.create(BonusTex.getSize().x, BonusTex.getSize().y + len*BonusTex.getSize().y);
-    renderTexture.clear(Color::Transparent);
+    renderTexture.clear(Color::Yellow);
 
     // Dessiner le sprite sur la texture
-    Sprite spriteTex;
     spriteTex.setTexture(BonusTex);
     spriteTex.setPosition(0, (BonusTex.getSize().y + (len-1)*BonusTex.getSize().y));
 
     // Dessiner le rectangle sur la texture
     backgroundLine.setSize(Vector2f(20, BonusTex.getSize().y + len*BonusTex.getSize().y));
     backgroundLine.setFillColor(Color(200,0,0, static_cast<Uint8>(250)));
-    backgroundLine.setPosition(BonusTex.getSize().x/2 - 10,0);//sprite.getPosition());
-
+    backgroundLine.setPosition(BonusTex.getSize().x/2 - 10,0);
 
     renderTexture.draw(backgroundLine);
     renderTexture.draw(spriteTex);
@@ -123,7 +121,23 @@ LongPuck::LongPuck(int l, int len) : RoundPuck(l) {
     // Finir le rendu hors écran
     renderTexture.display();
 
+    float offset = backgroundLine.getSize().y - spriteTex.getLocalBounds().height;
+    cout << "Constructed LongPuck with offset" << offset << endl;
     sprite.setTexture(renderTexture.getTexture());
-    sprite.setPosition(Vector2f(LINE_BEGIN + l*LINE_SPACING ,0)); //(len*BonusTex.getSize().y)));
+    sprite.setPosition(Vector2f(LINE_BEGIN + l*LINE_SPACING , -200.0f)); //(len*BonusTex.getSize().y)));
     // sprite.setScale(0.55f,0.55f);
+}
+
+int LongPuck::press(int l) {
+    if(isInZone() && l == line) {
+        cout << "Long Pressed, inZone : "  << y << endl;
+        pressed = true;
+       return 0; 
+    }
+    return -1;
+}
+
+int LongPuck::release(int l) {
+   cout << "Long Released" << endl;
+    return 0;  
 }

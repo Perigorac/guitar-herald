@@ -135,7 +135,7 @@ int Game::launch() {
     clock.restart(); // The clock and the music player are started just next to each other in order to sync game logic with the music
     lastLoopTime = Time::Zero;
     loop();
-    return 0;
+    return score;
 }
 
 int Game::event_handler() {
@@ -165,7 +165,7 @@ void Game::line_pressed(int line) {
     int scoremod;
     bool presseffect = true;
 
-    cout << "Pressed line " << line << endl;
+    // cout << "Pressed line " << line << endl;
     for(auto noteiter = notes.begin(); noteiter != notes.end();) {
         scoremod = (**noteiter).press(line);
         if(scoremod > 0)  {
@@ -186,7 +186,7 @@ void Game::line_pressed(int line) {
 
 void Game::line_released(int line) {
     int scoremod = 0;
-    cout << "Released line " << line << endl;
+    // cout << "Released line " << line << endl;
     for(auto noteiter = notes.begin(); noteiter != notes.end();) {
         scoremod = (**noteiter).release(line);
         if(scoremod > 0)  {

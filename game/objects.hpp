@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 
-#define SCREEN_BOTTOM 622.0f
+#define SCREEN_BOTTOM 642.0f
 #define LINE_BEGIN 410
 #define LINE_SPACING 55
 
@@ -45,7 +45,7 @@ class FallingObject : public Drawable { // Abstract
     protected:
         float y;
         Sprite sprite;
-        float operator>=(float value) const {return y + static_cast<float>(sprite.getLocalBounds().height) >= value;}
+        bool operator>=(float value) const {return y + static_cast<float>(sprite.getLocalBounds().height) >= value;}
         FallingObject& operator+=(float yfall);
         bool isInZone() {return *this >= SCREEN_BOTTOM;}
 };
@@ -97,9 +97,11 @@ class LongPuck : public RoundPuck {
     public:
         LongPuck(int l, int len);
         int fls() {return LONG_FLS;}
-
+        int press(int l);
+        int release(int l);
     private:
         int length;
         RectangleShape backgroundLine;
         RenderTexture renderTexture;
+        Sprite spriteTex;
 };
