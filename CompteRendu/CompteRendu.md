@@ -10,6 +10,7 @@ GUITAR HERALD se joue au clavier, avec les 8 touches QSDF JKLM représentant les
 Une note non jouée retire 5 points de score, une note bien jouée ajoute 5 points. Si vous avez la maladresse de pincer une corde au mauvais moment, vous perdez 1 point.
 Les notes bonus, en rouge, sont plus difficiles à jouer et rapportent souvent plus de 5 points : elles ne retirent pas de points si elles sont manquées.
 Les barres de strum descendent sur toutes les cordes et nécessitent donc d'appuyer rapidement sur toutes les touches ! Si cela est réussi, vous gagnez 10 points.
+
 ## Manuel d'installation : 
 
 Sous linux, il suffit de tapper la commande `make` dans le dossier `./game/`. Si vous n'avez pas installé le moteur graphique SFML2, il faut tapper `sudo apt-get install libsfml-dev`. 
@@ -23,15 +24,23 @@ Pour lancer le jeu, lancer `sfml-app`.
 Les **FallingObject** sont, comme leur nom l'indique, une classe abstraite d'objets qui tombent : tout ce qu'on appelle une "note" dans GUITAR HERALD. Ces notes se spécialisent en **StrumLine**, une barre horizontale nécessitant de pincer au moins 6 des cordes, pour des raisons techniques : SFML a du mal à gérer des appuis de plus de 6 touches en même temps. 
 Le reste des notes tombent sous la qualification de **RoundPuck**, des objets qui occupent une corde et qui nécessitent un appui sur cette même corde. Ainsi, **NormalPuck** désigne les notes habituelles, **BonusPuck** les palets bonus qui sont de couleur différente et ne font pas perdre de points si ils ne sont pas appuyés.
 Enfin, les **LongPucks** sont les notes longues dont le comportement diffère du reste des RoundPuck. Ils nécessitent de laisser appuyée une touche pendant un certain temps : en revanche, suite à des difficultés avec les collisions et les appuis longs dans SFML, ils ne sont malheureusement pas implémentés.
+
 ### Synchronisation :****
 
 Dans un jeu de rythme, la synchronisation entre le jeu et la musique est essentielle. SFML met à notre disposition les Objets `Clock` et `Time`, qui permettent de rendre compte très précisément du temps OS écoulé entre deux évènements. Laisser tourner l'horloge pendant toute la durée d'une chanson n'est pas un problème : les objets `Time` sont un nombre de microsecondes stocké dans un `Int64`, ce qui fait en sorte que notre horloge ne subira pas d'overflow avant des milliers d'années !
 Les fichiers de notes ont été méticuleusement écrits à l'aide d'Audacity, un logiciel libre, afin 
 
+Sources :
+ * https://en.wikipedia.org/wiki/Herald_and_Trumpet_contest
 
-Sources : 
+Polices : 
+ * **Metal Lord** de Typodermic Fonts
+ * **Pirho Herakles** de PRFonts
+ * **Quivira** de Alexander Lange
+
+Sources photographiques : 
  * https://commons.wikimedia.org/wiki/File:Ancient_Greek_theatre_at_Delphi,_Dlf474.jpg
  * https://commons.wikimedia.org/wiki/File:John_Martin_Le_Pandemonium_Louvre.JPG
  * https://www.worldhistory.org/uploads/images/3806.jpg?v=1599364805
  * https://commons.wikimedia.org/wiki/File:Barde_%C3%A0_la_lyre.jpg
- * https://en.wikipedia.org/wiki/Herald_and_Trumpet_contest
+

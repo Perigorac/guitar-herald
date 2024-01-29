@@ -24,12 +24,12 @@ int main() {
         Font GUITARFont;
         Font HERALDFont;
         Font ScoreFont;
-        GUITARFont.loadFromFile("./assets/font/MetallicShadow.ttf");
+        GUITARFont.loadFromFile("./assets/font/metal_lord.otf");
         HERALDFont.loadFromFile("./assets/font/HERAKLES.TTF");
         ScoreFont.loadFromFile("./assets/font/Quivira.otf");
 
-        Text GUITARText("GUITAR",GUITARFont,150);
-        GUITARText.setPosition(100,5);
+        Text GUITARText("GUITAR",GUITARFont,140);
+        GUITARText.setPosition(60,10);
         GUITARText.setFillColor(Color::White);
 
         Text HERALDText("HERALD",HERALDFont,100);
@@ -37,7 +37,7 @@ int main() {
         HERALDText.setFillColor(Color::White);
 
         Text ScoreText(("Your Score : " + to_string(score)),ScoreFont,60);
-        ScoreText.setPosition(300,250);
+        ScoreText.setPosition(130,350);
         ScoreText.setFillColor(Color::White);
 
         Texture bgTexture;
