@@ -6,8 +6,8 @@ int main() {
     int score;
     vector<string> pathvector = {"./audio/Seikilos_Epitaph_Full.ogg","./SeikilosNote.txt","./assets/bg/DelphiTheatre.jpg","./assets/Lyre.png","./assets/SekilosUnstroked.png", "./assets/NylonString.png", "./assets/NylonStringPressed.png"};
     Game Seikilos("Seikilos",pathvector);
-    // score = Seikilos.launch();
-    score = 50;
+    score = Seikilos.launch();
+    // score = 50;
 
     if(score == -1) {
         cout << "Error in game" << endl;
