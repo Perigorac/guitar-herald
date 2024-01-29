@@ -1,6 +1,46 @@
 #include "game.hpp"
 #include <iostream>
 
+RenderWindow window;
+
+Font GUITARFont;
+Font HERALDFont;
+Font ScoreFont;
+
+Text GUITARText("GUITAR",GUITARFont,140);
+Text HERALDText("HERALD",HERALDFont,100);
+Text ScoreText("Your Score : 0 ",ScoreFont,60);
+
+Texture bgTexture;
+Sprite bgSprite;
+
+void init_elements(int score) {
+
+    window.create(VideoMode(windowWidth,windowHeight),"CONGRATULATIONS !!");
+    window.setPosition(Vector2i(200,100));
+    window.requestFocus();
+    window.setFramerateLimit(FPS_LIMIT);
+    
+    GUITARFont.loadFromFile("./assets/font/metal_lord.otf");
+    HERALDFont.loadFromFile("./assets/font/HERAKLES.TTF");
+    ScoreFont.loadFromFile("./assets/font/Quivira.otf");
+    
+    GUITARText.setPosition(60,10);
+    GUITARText.setFillColor(Color::White);
+
+    HERALDText.setPosition(130,155);
+    HERALDText.setFillColor(Color::White);
+
+    ScoreText.setPosition(130,350);
+    ScoreText.setFillColor(Color::White);
+    ScoreText.setString("Your Score : " + to_string(score));
+
+    bgTexture.loadFromFile("./assets/bg/Pandemonium.jpg");
+    bgSprite.setTexture(bgTexture);
+    bgSprite.setScale(static_cast<float>(window.getSize().x) / bgTexture.getSize().x,
+                    static_cast<float>(window.getSize().y) / bgTexture.getSize().y);
+}
+
 int main() {
 
     int score;
@@ -15,37 +55,8 @@ int main() {
     }
     else {
         cout << "Game over" << endl;
-        RenderWindow window;
-        window.create(VideoMode(windowWidth,windowHeight),"CONGRATULATIONS !!");
-        window.setPosition(Vector2i(200,100));
-        window.requestFocus();
-        window.setFramerateLimit(FPS_LIMIT);
-        
-        Font GUITARFont;
-        Font HERALDFont;
-        Font ScoreFont;
-        GUITARFont.loadFromFile("./assets/font/metal_lord.otf");
-        HERALDFont.loadFromFile("./assets/font/HERAKLES.TTF");
-        ScoreFont.loadFromFile("./assets/font/Quivira.otf");
 
-        Text GUITARText("GUITAR",GUITARFont,140);
-        GUITARText.setPosition(60,10);
-        GUITARText.setFillColor(Color::White);
-
-        Text HERALDText("HERALD",HERALDFont,100);
-        HERALDText.setPosition(130,155);
-        HERALDText.setFillColor(Color::White);
-
-        Text ScoreText(("Your Score : " + to_string(score)),ScoreFont,60);
-        ScoreText.setPosition(130,350);
-        ScoreText.setFillColor(Color::White);
-
-        Texture bgTexture;
-        Sprite bgSprite;
-        !bgTexture.loadFromFile("./assets/bg/Pandemonium.jpg");
-        bgSprite.setTexture(bgTexture);
-        bgSprite.setScale(static_cast<float>(window.getSize().x) / bgTexture.getSize().x,
-                        static_cast<float>(window.getSize().y) / bgTexture.getSize().y);
+        init_elements(score);
 
         while(window.isOpen()) {
 

@@ -85,7 +85,7 @@ class NormalPuck : public RoundPuck {
 class BonusPuck : public RoundPuck {
     
     public:
-        BonusPuck(int l, int value) : RoundPuck(l) {sprite.setTexture(BonusTex);}
+        BonusPuck(int l, int value) : RoundPuck(l) {sprite.setTexture(BonusTex); pointvalue = value;}
         int release(int l);
         int fls() {return 0;}
     private:

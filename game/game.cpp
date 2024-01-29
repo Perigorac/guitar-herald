@@ -300,7 +300,7 @@ int Game::loop() {
         insert_notes();
 
         // End the game if the note vector is empty
-        if(notepattern.empty()) window.close();
+        if(notepattern.empty() && notes.empty()) window.close();
 
         // Clear the window for re-drawing
         window.clear();
@@ -334,6 +334,8 @@ int Game::loop() {
         }
 
     }
+
+    music.stop();
 
     return 0;
 }
