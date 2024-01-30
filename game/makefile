@@ -3,7 +3,7 @@ CFLAGS = -c
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 SOURCES = $(wildcard ./*.cpp)
 OBJECTS = $(SOURCES:.cpp=.o)
-EXECUTABLE = sfml-app
+EXECUTABLE = GUITAR-HERALD
 
 all: $(SOURCES) $(EXECUTABLE)
 

@@ -14,7 +14,7 @@ Les barres de strum descendent sur toutes les cordes et nécessitent donc d'appu
 ## Manuel d'installation
 
 Sous linux, il suffit de tapper la commande `make` dans le dossier `./game/`. Si vous n'avez pas installé le moteur graphique SFML2, il faut tapper `sudo apt-get install libsfml-dev`. 
-Pour lancer le jeu, lancer `sfml-app`.
+Pour lancer le jeu, lancer `GUITAR-HERALD`.
 
 ## Réalisation technique
 ![Diagramme UML](https://github.com/Perigorac/guitar-herald/blob/main/CompteRendu/UMLv1.1.png?raw=true)
