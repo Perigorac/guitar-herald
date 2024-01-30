@@ -9,7 +9,8 @@
 #define windowHeight 720
 
 #define SCROLL_SPEED 0.1f // pixel per frame
-#define MUSIC_START_DELAY (SCROLL_SPEED * (SCREEN_BOTTOM - (puckS * 128.0f)) * 6.0f) // gives a number of frames to delay music.play()
+#define MUSIC_START_DELAY (SCROLL_SPEED * (SCREEN_BOTTOM - (puckS * 128.0f)) * 6.0f) /* Gives a number of grames to delay music.play() : 
+the collision must happen when the bottom of the sprite touches SCREEN_BOTTOM */
 
 #define stringS 0.5f
 #define LyreSx 1.25f
@@ -17,6 +18,7 @@
 #define ColumnSx 0.95f
 #define ColumnSy 0.95f
 
+// The score loss when a line is mistakenly pressed
 #define LINE_NOTHING_SCORE_LOSS 1
 
 class Game {
@@ -33,7 +35,7 @@ class Game {
         
         int score;
         map<int,vector<string>> notepattern; /* The note pattern for the current song, loaded from the associated text file. 
-        Basically functions as a queue of notes to insert to the game screen.
+        Basically functions as a queue of notes to insert to the game screen, each associated to time in milliseconds at which to be inserted.
         The format of strings (one string correspoonds to one note) is : "TYPE,LINE,PARAM" - PARAM being an additional parameter :
         Length for long pucks, value for bonus pucks. */
         vector<FallingObject *> notes; // All of the notes currently on screen, as objects
@@ -58,8 +60,9 @@ class Game {
 
     public : 
         Game(string title, vector<string> pathvector);
+        // Inits all necessary elements and launches the main loop of the game.
         int launch();
-        // TEST
+        // The main graphics loop of the game - returns the score or -1 if the game didn't close properly
         int loop(); 
 
         // Init functions for game objects

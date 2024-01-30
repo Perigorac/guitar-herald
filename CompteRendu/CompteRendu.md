@@ -17,7 +17,7 @@ Sous linux, il suffit de tapper la commande `make` dans le dossier `./game/`. Si
 Pour lancer le jeu, lancer `GUITAR-HERALD`.
 
 ## Réalisation technique
-![Diagramme UML](https://github.com/Perigorac/guitar-herald/blob/main/CompteRendu/UMLv1.1.png?raw=true)
+![Diagramme UML](https://github.com/Perigorac/guitar-herald/blob/main/CompteRendu/UMLv1.2.png?raw=true)
 
 ### Résumé des classes
 

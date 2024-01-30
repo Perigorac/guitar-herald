@@ -9,7 +9,7 @@
 #define LINE_BEGIN 410
 #define LINE_SPACING 55
 
-//Texture sizes
+//Texture scale factors
 #define puckS 0.42f
 #define strumS 0.55f
 
@@ -44,9 +44,9 @@ class FallingObject : virtual public Drawable { // Abstract
         /*Virtual class inherited from Drawable that eases drawing of complex object*/
         void draw(RenderTarget &target, RenderStates states) const {target.draw(sprite);}
         virtual ~FallingObject() {};
-        /*Reponse to a press on line l - even StrumLines need this info*/
+        /*Response to a press on line l - even StrumLines need this info*/
         virtual int press(int l) {return 0;}
-        /*Reponse to a release on line l*/
+        /*Response to a release on line l*/
         virtual int release(int l) {return 0;}
         // Getter for each note's FLS
         virtual int fls() {return 0;}
@@ -112,6 +112,7 @@ class LongPuck : public RoundPuck {
         int release(int l); // Not implemented due to obtuse key-holding mechanics SFML
     private:
         int length;
+        int counter;
         RectangleShape backgroundLine; // Draw a trailing rectangle on the LongPuck
         RenderTexture renderTexture; // Texture that includes spriteTex and backgroundLine, in order to be drawn outside of the screen
         Sprite spriteTex;
