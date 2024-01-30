@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
 
 #define SCREEN_BOTTOM 642.0f
 #define LINE_BEGIN 410
@@ -31,15 +33,22 @@ extern Texture LongTex;
 
 extern Font NpFont;
 
-class FallingObject : public Drawable { // Abstract
+class FallingObject : virtual public Drawable { // Abstract
 
     public:
         FallingObject() {y = 0.0f;}
-        bool fall(float yfall);
+        /* this method implements basic physics of any note / falling object - fall by a certain amount
+        Returns true whenever the FallingObject falls beyond the bottom of the screen
+        It is made virtual so it can be overloaded in NormalPuck */
+        virtual bool fall(float yfall);
+        /*Virtual class inherited from Drawable that eases drawing of complex object*/
         void draw(RenderTarget &target, RenderStates states) const {target.draw(sprite);}
         virtual ~FallingObject() {};
+        /*Reponse to a press on line l - even StrumLines need this info*/
         virtual int press(int l) {return 0;}
+        /*Reponse to a release on line l*/
         virtual int release(int l) {return 0;}
+        // Getter for each note's FLS
         virtual int fls() {return 0;}
 
     protected:
@@ -61,7 +70,7 @@ class StrumLine : public FallingObject {
     
 };
 
-class RoundPuck : public FallingObject {
+class RoundPuck : virtual public FallingObject {
 
     public:
         RoundPuck(int l);
@@ -76,8 +85,9 @@ class NormalPuck : public RoundPuck {
 
     public:
         NormalPuck(int l);
-        int fls() {return NORMAL_FLS;}
+        bool fall(float yfall);
         void draw(sf::RenderTarget &target, sf::RenderStates states) const;
+        int fls() {return NORMAL_FLS;}
     private:
         Text text;
 };
@@ -93,15 +103,16 @@ class BonusPuck : public RoundPuck {
 
 };
 
-class LongPuck : public RoundPuck {
+// NOT IMPLEMENTED
+class LongPuck : public RoundPuck { 
     public:
         LongPuck(int l, int len);
         int fls() {return LONG_FLS;}
         int press(int l);
-        int release(int l);
+        int release(int l); // Not implemented due to obtuse key-holding mechanics SFML
     private:
         int length;
-        RectangleShape backgroundLine;
-        RenderTexture renderTexture;
+        RectangleShape backgroundLine; // Draw a trailing rectangle on the LongPuck
+        RenderTexture renderTexture; // Texture that includes spriteTex and backgroundLine, in order to be drawn outside of the screen
         Sprite spriteTex;
 };

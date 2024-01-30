@@ -1,13 +1,24 @@
 #include "game.hpp"
 
-map<Keyboard::Key,int> keymap = {{Keyboard::Q,1},
-                                 {Keyboard::S,2},
-                                 {Keyboard::D,3},
-                                 {Keyboard::F,4},
-                                 {Keyboard::J,5},
-                                 {Keyboard::K,6},
-                                 {Keyboard::L,7},
-                                 {Keyboard::M,8},
+// map<Keyboard::Key,int> keymap = {{Keyboard::Q,1},
+//                                  {Keyboard::S,2},
+//                                  {Keyboard::D,3},
+//                                  {Keyboard::F,4},
+//                                  {Keyboard::J,5},
+//                                  {Keyboard::K,6},
+//                                  {Keyboard::L,7},
+//                                  {Keyboard::M,8},
+//                                  };
+// Remnants of an alternate control scheme
+
+map<Keyboard::Key,int> keymap = {{Keyboard::S,1},
+                                 {Keyboard::D,2},
+                                 {Keyboard::F,3},
+                                 {Keyboard::G,4},
+                                 {Keyboard::H,5},
+                                 {Keyboard::J,6},
+                                 {Keyboard::K,7},
+                                 {Keyboard::L,8},
                                  };
 
 extern Font NpFont;
@@ -22,6 +33,7 @@ Game::Game(string title, vector<string> pathvector) {
 // Init functions
 
 int Game::init_window() {
+
     window.create(VideoMode(windowWidth,windowHeight),windowtitle);
     window.setPosition(Vector2i(200,100));
     window.requestFocus();
@@ -50,9 +62,8 @@ int Game::decode_notes() {
         char ntype;
         vector<int> v;
         if(fscanf(notefile,"%d\t%c\t%d\t%d",&time,&ntype,&line,&param) < 2) break;
-        // cout << "Time= " << time << ", type=" << ntype << ", line=" << line << ", param=" << param << endl;
         string temp = string(1,ntype) + "," + to_string(line) + "," + to_string(param);
-        notepattern[time*10].push_back(temp);
+        notepattern[time*10].push_back(temp); // *10 : for easier typing, times in the .note are written in tens of milliseconds
     }
     
     fclose(notefile);
@@ -78,20 +89,16 @@ int Game::init_decor() {
     }
     columnSprite.setTexture(columnTexture);
     columnSprite.setScale(ColumnSx,ColumnSy);
-    columnSprite.setPosition((int)((windowWidth + 150  - 470*ColumnSx)/2),(int)(windowHeight - 1347*ColumnSx)); //On rajoute 150 parce que la fenêtre semble plus grande que windowWidth (plutot 1370 que 1220) et bonne pour windowHeight
+    //The addition of a 150 to x comes from a weird leftward shift between coordinates and window on our devices
+    columnSprite.setPosition((int)((windowWidth + 150  - 470*ColumnSx)/2),(int)(windowHeight - 1347*ColumnSx));
 
     sf::Color spriteColor = columnSprite.getColor();
-    spriteColor.a = 150; // Mettre une valeur entre 0 et 255 pour l'opacité
+    spriteColor.a = 150; // Set alpha to 150 to make it semi-opaque
     columnSprite.setColor(spriteColor);
-    if (!pressedStringTexture.loadFromFile(paths[6])) {
-        std::cerr << "Could not load string pressed image at " << paths[6] << std::endl;
-        return -1;
-    }
 
-    if (!stringTexture.loadFromFile(paths[5])) {
-        std::cerr << "Could not load string image at " << paths[5] << std::endl;
-        return -1;
-    }
+    pressedStringTexture.loadFromFile("./assets/NylonStringPressed.png");
+    stringTexture.loadFromFile("./assets/NylonString.png");
+    
     int xPosition = LINE_BEGIN+80;
     int spacing = LINE_SPACING;
     for (int i = 0; i < 8; ++i) {
@@ -111,7 +118,7 @@ int Game::init_decor() {
     return 0;
 }
 
-int Game::init_obj_sprites() {
+int Game::load_obj_textures() {
     NormTex.loadFromFile("./assets/BluePuck.png");
     StrumTex.loadFromFile("./assets/Strum.png");
     BonusTex.loadFromFile("./assets/GreenPuck.png");
@@ -120,125 +127,13 @@ int Game::init_obj_sprites() {
     return 0;
 }
 
-// Game processing functions
+// Display functions
 
-int Game::launch() {
-    score = 0;
-    init_window();
-    init_music();
-    decode_notes();
-    init_background();
-    init_decor();
-    init_obj_sprites();
-
-    framecounter = 0.0f;
-    clock.restart(); // The clock and the music player are started just next to each other in order to sync game logic with the music
-    lastLoopTime = Time::Zero;
-    loop();
-    return score;
-}
-
-int Game::event_handler() {
-    Event event;
-    int line = 0;
-    while (window.pollEvent(event)) {
-        switch(event.type) {
-            case Event::Closed:
-                return -1;
-
-            case Event::KeyPressed:
-                if(keymap.count(event.key.code) > 0) line_pressed(keymap[event.key.code]);
-                break;
-
-            case Event::KeyReleased:
-                if(keymap.count(event.key.code) > 0) line_released(keymap[event.key.code]);
-                break;
-
-            default:
-                break;
-        }
-    }
-    return 0;
-}
-
-void Game::line_pressed(int line) {
-    int scoremod;
-    bool presseffect = true;
-
-    // cout << "Pressed line " << line << endl;
-    for(auto noteiter = notes.begin(); noteiter != notes.end();) {
-        scoremod = (**noteiter).press(line);
-        if(scoremod > 0)  {
-            cout << "There was an object on this line, worth " << scoremod << " points." << endl;
-            score += scoremod;
-            noteiter = notes.erase(noteiter);
-        } 
-        else noteiter++;
-
-        if(scoremod == -1) presseffect = false;
-    }
-    stringsSprites[line - 1].setTexture(pressedStringTexture);
-
-    if(!presseffect) score-=LINE_NOTHING_SCORE_LOSS;
-
-    return;
-}
-
-void Game::line_released(int line) {
-    int scoremod = 0;
-    // cout << "Released line " << line << endl;
-    for(auto noteiter = notes.begin(); noteiter != notes.end();) {
-        scoremod = (**noteiter).release(line);
-        if(scoremod > 0)  {
-            cout << "There was an object on this line, worth " << scoremod << " points." << endl;
-            score += scoremod;
-            noteiter = notes.erase(noteiter);
-        } else {
-            if(scoremod == -1) score-=LINE_NOTHING_SCORE_LOSS;
-            noteiter++;
-        }
-    }
-    stringsSprites[line - 1].setTexture(stringTexture);
-    return;
-}
-
-void Game::insert_notes() {
-
-    if(notepattern.empty()) return;
-    int next_ms = notepattern.begin()->first;
-
-    if(clock.getElapsedTime().asMilliseconds() >= next_ms) {
-        while(!notepattern[next_ms].empty()) {
-            string next_note = notepattern[next_ms].back();
-            cout << "ms = " << next_ms << ", adding " << next_note << endl;
-            char t;
-            int l,p;
-            sscanf(next_note.c_str(),"%c,%d,%d",&t,&l,&p);
-            // cout << "t = " << t << ", l = " << l << ", r = " << r << endl;
-            
-            switch(t) {
-                case 'N':
-                    notes.push_back(new NormalPuck(l));
-                    break;
-
-                case 'L' :
-                    notes.push_back(new LongPuck(l,p));
-                    break;
-
-                case 'S' :
-                    notes.push_back(new StrumLine);
-                    break;
-
-                case 'B' :
-                    notes.push_back(new BonusPuck(l,p));
-                    break;
-                    
-                default:
-                    break;
-            }
-            notepattern[next_ms].pop_back();
-        }
-        notepattern.erase(next_ms);
+void Game::draw_decor() {
+    window.draw(columnSprite);
+    window.draw(lyreSprite);
+    for (int i = 0; i < 8; ++i) {
+        window.draw(stringsSprites[i]);
     }
 }
 
@@ -266,14 +161,125 @@ void Game::displayScore() {
     window.draw(scoreText);
 }
 
-void Game::draw_decor() {
-    window.draw(columnSprite);
-    window.draw(lyreSprite);
-    for (int i = 0; i < 8; ++i) {
-        window.draw(stringsSprites[i]);
-    }
+// Game processing functions
+
+int Game::launch() {
+
+    score = 0;
+    init_window();
+    init_music();
+    decode_notes();
+    init_background();
+    init_decor();
+    load_obj_textures();
+
+    framecounter = 0.0f;
+    clock.restart();
+    lastLoopTime = Time::Zero;
+    user_closed = false;
+    srand(time(0));
+    return loop();
 }
 
+int Game::event_handler() {
+    Event event;
+    int line = 0;
+    while (window.pollEvent(event)) {
+        switch(event.type) {
+            case Event::Closed:
+                user_closed = true;
+                return -1;
+
+            case Event::KeyPressed:
+                if(keymap.count(event.key.code) > 0) line_pressed(keymap[event.key.code]);
+                break;
+
+            case Event::KeyReleased:
+                if(keymap.count(event.key.code) > 0) line_released(keymap[event.key.code]);
+                break;
+
+            default:
+                break;
+        }
+    }
+    return 0;
+}
+
+void Game::line_pressed(int line) {
+    int scoremod;
+    bool presseffect = true;
+
+    // cout << "Pressed line " << line << endl;
+    for(auto noteiter = notes.begin(); noteiter != notes.end();) {
+        scoremod = (**noteiter).press(line);
+        if(scoremod > 0)  {
+            score += scoremod;
+            noteiter = notes.erase(noteiter);
+        } 
+        else noteiter++;
+
+        if(scoremod == -1) presseffect = false;
+    }
+    stringsSprites[line - 1].setTexture(pressedStringTexture);
+
+    if(!presseffect) score-=LINE_NOTHING_SCORE_LOSS;
+
+    return;
+}
+
+void Game::line_released(int line) {
+    int scoremod = 0;
+    for(auto noteiter = notes.begin(); noteiter != notes.end();) {
+        scoremod = (**noteiter).release(line);
+        if(scoremod > 0)  {
+            score += scoremod;
+            noteiter = notes.erase(noteiter);
+        } else {
+            if(scoremod == -1) score-=LINE_NOTHING_SCORE_LOSS;
+            noteiter++;
+        }
+    }
+    stringsSprites[line - 1].setTexture(stringTexture);
+    return;
+}
+
+void Game::insert_notes() {
+
+    if(notepattern.empty()) return;
+    int next_ms = notepattern.begin()->first;
+
+    if(clock.getElapsedTime().asMilliseconds() >= next_ms) {
+        while(!notepattern[next_ms].empty()) {
+            string next_note = notepattern[next_ms].back();
+            char t;
+            int l,p;
+            sscanf(next_note.c_str(),"%c,%d,%d",&t,&l,&p);
+            
+            switch(t) {
+                case 'N':
+                    notes.push_back(new NormalPuck(l));
+                    break;
+
+                case 'L' :
+                    notes.push_back(new LongPuck(l,p));
+                    break;
+
+                case 'S' :
+                    notes.push_back(new StrumLine);
+                    break;
+
+                case 'B' :
+                    notes.push_back(new BonusPuck(l,p));
+                    break;
+                    
+                default:
+                    break;
+            }
+            notepattern[next_ms].pop_back();
+        }
+        notepattern.erase(next_ms);
+    }
+}
 
 int Game::loop() {
 
@@ -284,6 +290,7 @@ int Game::loop() {
 
     while(window.isOpen()) {
 
+        // Keep track of time and delta - to keep the game in sync if framerate changes
         float deltaTime = (clock.getElapsedTime() - lastLoopTime).asMilliseconds();
         lastLoopTime = clock.getElapsedTime();
 
@@ -335,7 +342,9 @@ int Game::loop() {
 
     }
 
+    // Once the game is over, stop the music
     music.stop();
 
-    return 0;
+    if(user_closed) return -1;
+    else return score;
 }

@@ -10,15 +10,14 @@ Texture LongTex;
 Font NpFont;
 
 // FALLING OBJECT
+
 FallingObject& FallingObject::operator+=(float yfall) {
-    sprite.move(sf::Vector2f(0.0f, yfall));
+    sprite.move(Vector2f(0.0f, yfall));
     y += yfall;
     return *this;
 }
 
 bool FallingObject::fall(float yfall) {
-    // this method implements basic physics of any note / falling object - fall by a certain amount
-    // Return true whenever the FallingObject falls beyond the bottom of the screen
     *this += yfall;
     return (y > SCREEN_BOTTOM);
 }
@@ -81,11 +80,20 @@ int RoundPuck::release(int l) {
 NormalPuck::NormalPuck(int l) : RoundPuck(l) {
     sprite.setTexture(NormTex);
     text.setFont(NpFont);
-    text.setString("AAAAA");
+    text.setOutlineThickness(1);
+    text.setPosition(sprite.getPosition()+Vector2f(15.0f,9.0f));
+    wchar_t rndmchar = 0x1D21D + rand() % 0x023; // Generate random Unicode character in range 1D21D ~ 1D241
+    text.setString(rndmchar);
+}
+
+bool NormalPuck::fall(float yfall) {
+    text.move(Vector2f(0.0f, yfall));
+    return FallingObject::fall(yfall);
 }
 
 void NormalPuck::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-    target.draw(sprite);
+    FallingObject::draw(target,states);
+    target.draw(text);
 }
 
 // BONUS PUCK
@@ -99,18 +107,18 @@ int BonusPuck::release(int l) {
     }
 }
 
-// LONG PUCK
+// LONG PUCK - NOT IMPLEMENTED
 
 LongPuck::LongPuck(int l, int len) : RoundPuck(l) {
-    // Créer la texture pour le rendu hors écran
+    // Create texture for out-of-bounds rendering
     renderTexture.create(BonusTex.getSize().x, BonusTex.getSize().y + len*BonusTex.getSize().y);
     renderTexture.clear(Color::Yellow);
 
-    // Dessiner le sprite sur la texture
+    // Draw sprite on said texture
     spriteTex.setTexture(BonusTex);
     spriteTex.setPosition(0, (BonusTex.getSize().y + (len-1)*BonusTex.getSize().y));
 
-    // Dessiner le rectangle sur la texture
+    // Draw trailing rectangle on said texture
     backgroundLine.setSize(Vector2f(20, BonusTex.getSize().y + len*BonusTex.getSize().y));
     backgroundLine.setFillColor(Color(200,0,0, static_cast<Uint8>(250)));
     backgroundLine.setPosition(BonusTex.getSize().x/2 - 10,0);
@@ -118,19 +126,17 @@ LongPuck::LongPuck(int l, int len) : RoundPuck(l) {
     renderTexture.draw(backgroundLine);
     renderTexture.draw(spriteTex);
 
-    // Finir le rendu hors écran
+    // display the RenderTexture (behaves like a "sub window")
     renderTexture.display();
 
+    // set the RenderTexture in the sprite in order to benefit from FallingObject::draw()
     float offset = backgroundLine.getSize().y - spriteTex.getLocalBounds().height;
-    cout << "Constructed LongPuck with offset" << offset << endl;
     sprite.setTexture(renderTexture.getTexture());
     sprite.setPosition(Vector2f(LINE_BEGIN + l*LINE_SPACING , -200.0f)); //(len*BonusTex.getSize().y)));
-    // sprite.setScale(0.55f,0.55f);
 }
 
 int LongPuck::press(int l) {
     if(isInZone() && l == line) {
-        cout << "Long Pressed, inZone : "  << y << endl;
         pressed = true;
        return 0; 
     }
@@ -138,6 +144,5 @@ int LongPuck::press(int l) {
 }
 
 int LongPuck::release(int l) {
-   cout << "Long Released" << endl;
     return 0;  
 }

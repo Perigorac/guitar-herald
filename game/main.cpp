@@ -44,17 +44,18 @@ void init_elements(int score) {
 int main() {
 
     int score;
-    vector<string> pathvector = {"./audio/Seikilos_Epitaph_Full.ogg","./SeikilosNote.txt","./assets/bg/DelphiTheatre.jpg","./assets/Lyre.png","./assets/SekilosUnstroked.png", "./assets/NylonString.png", "./assets/NylonStringPressed.png"};
+    vector<string> pathvector = {"./audio/Seikilos_Epitaph_Full.ogg","./Seikilos.note","./assets/bg/DelphiTheatre.jpg","./assets/Lyre.png","./assets/SekilosUnstroked.png"};
     Game Seikilos("Seikilos",pathvector);
     score = Seikilos.launch();
-    // score = 50;
+
+    cout << "Game over" << endl;
 
     if(score == -1) {
-        cout << "Error in game" << endl;
+        window.close();
         return -1;
     }
     else {
-        cout << "Game over" << endl;
+        cout << "You did it !" << endl;
 
         init_elements(score);
 

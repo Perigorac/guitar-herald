@@ -22,16 +22,15 @@ FallingObject& FallingObject::operator+=(float yfall) et float FallingObject::op
 [v] 2 conteneurs différents de la STL
 > notepattern est un map, notes est un vector
 
-[] diagrammme de classe UML complet
+[v] diagrammme de classe UML complet
 
 [] commentaire du code
-Pour l'instant uniquement les grandes étapes de la boucle principale de jeu
 
 [?] pas d’erreurs avec Valgrind
 
 [] rendu par dépôt git, adresse à envoyer par mail avec dans le sujet le motif [EISE/MAIN 4 C++ Projet]
 
-[x] pas de méthodes/fonctions de plus de 30 lignes (hors commentaires, lignes vides et assert);
+[v] pas de méthodes/fonctions de plus de 30 lignes (hors commentaires, lignes vides et assert);
 
 [v] utilisation d’un Makefile avec une règle ”all” et une règle ”clean” ou autre outil de build automatique
 CHECK.
