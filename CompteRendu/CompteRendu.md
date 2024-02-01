@@ -28,8 +28,9 @@ Enfin, les **LongPucks** sont les notes longues dont le comportement diffère du
 ### Synchronisation
 
 Dans un jeu de rythme, la synchronisation entre le jeu et la musique est essentielle. SFML met à notre disposition les Objets `Clock` et `Time`, qui permettent de rendre compte très précisément du temps OS écoulé entre deux évènements. Laisser tourner l'horloge pendant toute la durée d'une chanson n'est pas un problème : les objets `Time` sont un nombre de microsecondes stocké dans un `Int64`, ce qui fait en sorte que notre horloge ne subira pas d'overflow avant des milliers d'années !
-Les fichiers de notes ont été méticuleusement écrits à l'aide d'Audacity, un logiciel libre, afin 
+Les fichiers de notes ont été méticuleusement écrits à l'aide d'Audacity, un logiciel libre, afin de retranscrire avec le timing le plus précis les notes de la chanson.
 
+Note aux utilisateurs de WSL : il peut arriver, les quelques premières fois où vous lancerez le jeu, que la fenêtre de rendu mette du temps à apparaître, par exemple, si le message `Setting vertical sync not supported` apparaît avant la fenêtre. Dans ce cas, il y aura un décalage entre la musique et les graphismes : relancer l'éxécutable quelques fois règle ce problème.
 
 ## Sources
 
