@@ -1,10 +1,13 @@
 #include "game.hpp"
 #include <iostream>
 
+// Half-period of "NEW RECORD" text blinking
 #define BLINK_HPERIOD_MS 500
 
 RenderWindow window;
 Clock bclock;
+
+Music bgmusic;
 
 Font GUITARFont;
 Font HERALDFont;
@@ -118,9 +121,13 @@ int main() {
     }
     else {
         cout << "You did it !" << endl;
+        
 
         init_elements(score);
         bclock.restart();
+
+        bgmusic.openFromFile("./audio/Darren_Korb_Wretched_Shades.ogg");
+        bgmusic.play();
 
         while(window.isOpen()) {
 
@@ -135,7 +142,7 @@ int main() {
             window.draw(GUITARText);
             window.draw(HERALDText);
             window.draw(ScoreText);
-            if(score > best_score) blink_record();
+            if(score > best_score) blink_record(); // Display "NEW RECORD" only in case of *actual* new record
 
             window.display();
         }

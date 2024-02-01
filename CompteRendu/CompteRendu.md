@@ -1,6 +1,7 @@
 # Guitar Herald
 
 A la 96ème Olympiade de l'an -396, l'épreuve d'hérauts et de trompettes se déroule pour la première fois. À l'âge des courses de chars et de la lutte nue, des athlètes hors du commun s'affrontent sur leur virtuosité. Dans Guitar Herald, armez vous de votre Lyre 8 choeurs et revivez le frisson de cette épreuve mythique en interprétant des musiques cultes comme l'Épitaphe de Sekilos. Il faudra jouer les notes en rythme, mais aussi les accords, les notes liées, et des ornements supplémentaires pour obtenir du score bonus. 
+Le record est actuellement détenu par le lyriste grec (?) Mathos. Pourrez vous le battre et prétendre au titre de Champion?
 
 ![Screenshot](./Screenshot.png)
 ## Regles
@@ -37,6 +38,10 @@ Note aux utilisateurs de WSL : il peut arriver, les quelques premières fois où
 Bibliographie :
  * https://en.wikipedia.org/wiki/Herald_and_Trumpet_contest
 
+Musiques :
+ * Épitaphe de Seikilos, *Inconnu*, Ier ou IIeme siècle
+ * Wretched Shades, Darren Korb, 2020
+
 Polices : 
  * **Metal Lord** de Typodermic Fonts
  * **Pirho Herakles** de PRFonts
@@ -47,4 +52,3 @@ Sources photographiques :
  * https://commons.wikimedia.org/wiki/File:John_Martin_Le_Pandemonium_Louvre.JPG
  * https://www.worldhistory.org/uploads/images/3806.jpg?v=1599364805
  * https://commons.wikimedia.org/wiki/File:Barde_%C3%A0_la_lyre.jpg
-

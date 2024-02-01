@@ -7,7 +7,7 @@
 
 # Les attendus
 
-[] 8 classes
+[x] 8 classes
 7 pour l'instant
 
 [v] 3 niveaux de hiérarchie
@@ -24,11 +24,11 @@ FallingObject& FallingObject::operator+=(float yfall) et float FallingObject::op
 
 [v] diagrammme de classe UML complet
 
-[] commentaire du code
+[v] commentaire du code
 
 [?] pas d’erreurs avec Valgrind
 
-[] rendu par dépôt git, adresse à envoyer par mail avec dans le sujet le motif [EISE/MAIN 4 C++ Projet]
+[v] rendu par dépôt git, adresse à envoyer par mail avec dans le sujet le motif [EISE/MAIN 4 C++ Projet]
 
 [v] pas de méthodes/fonctions de plus de 30 lignes (hors commentaires, lignes vides et assert);
 
