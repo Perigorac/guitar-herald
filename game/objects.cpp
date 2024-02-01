@@ -37,7 +37,8 @@ int StrumLine::press(int line) {
         linePressed[line] = true;
         int nbpressed = 0;
         for(auto lPiter = linePressed.begin(); lPiter != linePressed.end(); lPiter++) if(*lPiter) nbpressed++;
-        if(nbpressed > 5) { // Everything is 'true', all lines have been pressed
+        if(nbpressed > 5) { /* All lines have been pressed - we're being lenient here, only 6 out of the 8 must be pressed. 
+        We're also not checking for releases.*/
             return STRUM_VALUE;
         }
         else {

@@ -8,7 +8,7 @@ A la 96ème Olympiade de l'an -396, l'épreuve d'hérauts et de trompettes se d�
 GUITAR HERALD se joue au clavier, avec les 8 touches QSDF JKLM représentant les 8 cordes de la lyre. Au fur et à mesure de la musique, des notes défilent sur l'écran : au moment où la note touche la corde horizontale, appuyez sur la touche correspondante pour jouer la note et gagner des points !
 
 Une note non jouée retire 5 points de score, une note bien jouée ajoute 5 points. Si vous avez la maladresse de pincer une corde au mauvais moment, vous perdez 1 point.
-Les notes bonus, en rouge, sont plus difficiles à jouer et rapportent souvent plus de 5 points : elles ne retirent pas de points si elles sont manquées.
+Les notes bonus, en rouge, sont plus difficiles à jouer et rapportent au moins 10 points : elles ne retirent pas de points si elles sont manquées.
 Les barres de strum descendent sur toutes les cordes et nécessitent donc d'appuyer rapidement sur toutes les touches ! Si cela est réussi, vous gagnez 10 points.
 
 ## Manuel d'installation

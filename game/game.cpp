@@ -121,8 +121,8 @@ int Game::init_decor() {
 int Game::load_obj_textures() {
     NormTex.loadFromFile("./assets/BluePuck.png");
     StrumTex.loadFromFile("./assets/Strum.png");
-    BonusTex.loadFromFile("./assets/GreenPuck.png");
-    LongTex.loadFromFile("./assets/RedPuck.png");
+    BonusTex.loadFromFile("./assets/RedPuck.png");
+    LongTex.loadFromFile("./assets/GreenPuck.png");
     NpFont.loadFromFile("./assets/font/Quivira.otf");
     return 0;
 }
